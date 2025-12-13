@@ -58,9 +58,26 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
-router.get("/google", (req, res) => {
-  res.status(501).json({ message: "Google OAuth not enabled yet" });
-});
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+router.get(
+  "/google/callback",
+  passport.authenticate("google", { session: false }),
+  (req, res) => {
+    const token = jwt.sign(
+      { userId: req.user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.redirect(
+      `${process.env.CLIENT_ORIGIN}/auth/success?token=${token}`
+    );
+  }
+);
 
 router.get("/github", (req, res) => {
   res.status(501).json({ message: "GitHub OAuth not enabled yet" });
