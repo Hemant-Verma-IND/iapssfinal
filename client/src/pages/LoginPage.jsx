@@ -29,7 +29,7 @@ const LoginPage = () => {
   setLoading(true);
 
   try {
-    const res = await fetch("http://localhost:4000/api/auth/login", {
+    const res = await fetch("https://iapss-backend.onrender.com/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -52,11 +52,11 @@ const LoginPage = () => {
 
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:4000/api/auth/google";
+    window.location.href = "https://iapss-backend.onrender.com/api/auth/google";
   };
 
   const handleGithubLogin = () => {
-    window.location.href = "http://localhost:4000/api/auth/github";
+    window.location.href = "https://iapss-backend.onrender.com/api/auth/github";
   };
 
   return (

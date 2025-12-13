@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:4000/api";
+const API_BASE = "https://iapss-backend.onrender.com/api";
 
 async function postJson(path, body) {
   const res = await fetch(`${API_BASE}${path}`, {

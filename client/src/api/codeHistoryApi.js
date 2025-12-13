@@ -1,6 +1,6 @@
 import { getToken } from "../utils/auth";
 
-const API = "http://localhost:4000/api/code";
+const API = "https://iapss-backend.onrender.com/api/code";
 
 export async function saveCodeHistory(data) {
   const res = await fetch(API + "/save", {

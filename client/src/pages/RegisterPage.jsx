@@ -69,11 +69,11 @@ async function handleRegister(e) {
 }
 
   const handleGoogleSignup = () => {
-    window.location.href = "http://localhost:4000/api/auth/google";
+    window.location.href = "https://iapss-backend.onrender.com/api/auth/google";
   };
 
   const handleGithubSignup = () => {
-    window.location.href = "http://localhost:4000/api/auth/github";
+    window.location.href = "https://iapss-backend.onrender.com/api/auth/github";
   };
 
   return (
