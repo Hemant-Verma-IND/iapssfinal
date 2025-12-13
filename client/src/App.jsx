@@ -11,7 +11,7 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 // NEW
 import LandingPage from "./pages/LandingPage/LandingPage";
-import AuthSuccess from "./pages/auth/AuthSuccess";
+import AuthSuccess from "./pages/Auth/AuthSuccess";
 
 import NotFoundPage from "./pages/NotFoundPage";
 
