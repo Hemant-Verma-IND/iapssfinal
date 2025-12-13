@@ -13,6 +13,9 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import AuthSuccess from "./pages/auth/AuthSuccess";
 
+import NotFoundPage from "./pages/NotFoundPage";
+
+
 
 const App = () => {
   return (
@@ -66,6 +69,8 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );

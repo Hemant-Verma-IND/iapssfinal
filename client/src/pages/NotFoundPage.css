@@ -1,0 +1,294 @@
+/* ================= VARIABLES ================= */
+:root {
+  --nf-bg: #020617;
+  --nf-primary: #3b82f6;
+  --nf-accent: #10b981;
+  --nf-text: #e2e8f0;
+  --nf-sub: #94a3b8;
+}
+
+/* ================= PAGE LAYOUT ================= */
+.not-found-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at bottom, #0f172a 0%, #000000 100%);
+  color: var(--nf-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Moving Star Background */
+.stars, .twinkling {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%; height: 100%;
+  display: block;
+  pointer-events: none; /* Allows clicking game */
+}
+.stars {
+  background: #000 url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png') repeat top center;
+  z-index: 0;
+}
+.twinkling {
+  background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/twinkling.png') repeat top center;
+  z-index: 1;
+  animation: move-twink-back 200s linear infinite;
+  opacity: 0.3;
+}
+@keyframes move-twink-back {
+  from {background-position:0 0;}
+  to {background-position:-10000px 5000px;}
+}
+
+/* ================= NAVIGATION ================= */
+.nf-nav {
+  padding: 24px 40px;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+.nf-brand {
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.2rem;
+}
+.nf-logo {
+  background: linear-gradient(135deg, var(--nf-primary), #1d4ed8);
+  width: 36px; height: 36px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 800; font-size: 0.9rem;
+}
+
+/* ================= CONTAINER ================= */
+.nf-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+  position: relative;
+  z-index: 10;
+  padding: 0 40px;
+}
+
+/* --- Left: Text Content --- */
+.nf-content { max-width: 480px; }
+
+/* Subtitle & Body */
+.nf-subtitle {
+  font-size: 2rem; 
+  color: var(--nf-sub); 
+  font-weight: 300; 
+  margin: 0 0 24px;
+  letter-spacing: -0.02em;
+}
+
+/* Functional Message Box */
+.nf-functional-message {
+  margin-bottom: 32px;
+  background: rgba(15, 23, 42, 0.6);
+  border-left: 3px solid var(--nf-primary);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  backdrop-filter: blur(4px);
+}
+
+.primary-text {
+  font-size: 1.05rem;
+  color: #e2e8f0;
+  margin: 0 0 8px 0;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.secondary-text {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.nf-functional-message code {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #fca5a5; /* Error Red */
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9em;
+}
+
+/* Buttons */
+.nf-buttons { display: flex; gap: 16px; }
+.nf-btn {
+  padding: 12px 24px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.2s;
+  font-size: 0.95rem;
+}
+.nf-btn.primary {
+  background: var(--nf-primary); border: 1px solid var(--nf-primary); color: white;
+  box-shadow: 0 0 20px rgba(59,130,246,0.3);
+}
+.nf-btn.primary:hover { transform: translateY(-2px); background: #2563eb; }
+.nf-btn.ghost {
+  background: transparent; border: 1px solid #334155; color: #cbd5e1;
+}
+.nf-btn.ghost:hover { border-color: var(--nf-text); color: white; background: rgba(255,255,255,0.05); }
+
+
+/* ================= RIGHT: GAME & ALIEN SCENE ================= */
+
+.nf-game-wrapper {
+  position: relative;
+  width: 400px; height: 600px;
+  background: rgba(10, 10, 18, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+  cursor: crosshair;
+}
+
+.game-canvas { width: 100%; height: 100%; display: block; }
+
+/* Overlays (Menu & Game Over) */
+.game-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(2, 6, 23, 0.9); /* Dark backdrop */
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 20;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.game-overlay h3 { font-size: 1.6rem; font-weight: 800; color: #fff; margin: 0; letter-spacing: 0.05em; }
+.game-overlay p { color: #94a3b8; margin: 0; font-size: 0.95rem; }
+
+/* Wrapper for the SVG scene to make it float/glow */
+.alien-wrapper {
+  margin-bottom: 24px;
+  filter: drop-shadow(0 15px 30px rgba(0,0,0,0.5));
+}
+
+/* Play Button */
+.play-btn {
+  background: var(--nf-primary); color: white; border: none;
+  padding: 12px 32px; border-radius: 99px; font-weight: 800; cursor: pointer;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); transition: 0.2s;
+  font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.play-btn:hover { transform: scale(1.05); background: #2563eb; }
+
+/* Instruction Text */
+.instruction { font-size: 0.75rem !important; opacity: 0.6; margin-top: 12px !important; display: block; }
+
+/* Game Over Styles */
+.game-overlay.fail { background: rgba(30, 5, 5, 0.95); } /* Red tint */
+.game-overlay.fail h3 { color: #ef4444; }
+.blink { animation: blinkAnim 1s infinite; }
+@keyframes blinkAnim { 50% { opacity: 0.5; } }
+
+.play-btn.retry { background: #10b981; box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
+.play-btn.exit { background: transparent; border: 1px solid #475569; color: #94a3b8; box-shadow: none; margin-left: 10px; padding: 12px 20px; }
+.overlay-actions { display: flex; gap: 10px; margin-top: 10px; }
+
+/* HUD Score */
+.live-score {
+  position: absolute; top: 20px; right: 20px;
+  font-family: 'Fira Code', monospace; font-size: 1.1rem; color: #10b981;
+  font-weight: 700; z-index: 10;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); pointer-events: none;
+}
+
+/* ================= ANIMATIONS (Alien Scene) ================= */
+
+/* 1. Searching/Swaying Arms */
+.alien-arms-search {
+  transform-origin: 0 30px; /* Pivot at body */
+  animation: signal-search-sway 5s ease-in-out infinite;
+}
+@keyframes signal-search-sway {
+  0% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
+  100% { transform: rotate(-8deg); }
+}
+
+/* 2. Head Bobbing (Sad Sigh) */
+.alien-head {
+  animation: head-bob 4s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes head-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px) rotate(-2deg); }
+}
+
+/* 3. Phone Screen Pulse */
+.phone-screen {
+  animation: screen-pulse 2s infinite alternate;
+}
+@keyframes screen-pulse {
+  from { fill: #0ea5e9; }
+  to { fill: #38bdf8; }
+}
+
+/* 4. Network Signal Fail (White -> Red -> Off) */
+.wifi-signal circle, .wifi-signal path {
+  stroke: #ffffff; fill: #ffffff; opacity: 0;
+}
+.sig-dot { animation: wifi-ping 2s infinite; }
+.sig-mid { animation: wifi-ping 2s infinite 0.2s; }
+.sig-outer { animation: wifi-fail 2s infinite 0.4s; }
+
+@keyframes wifi-ping {
+  0% { opacity: 0; fill: #fff; stroke: #fff; }
+  20% { opacity: 1; fill: #fff; stroke: #fff; }
+  80% { opacity: 1; fill: #ef4444; stroke: #ef4444; } /* Red Flash */
+  100% { opacity: 0; fill: #ef4444; stroke: #ef4444; }
+}
+
+@keyframes wifi-fail {
+  0% { opacity: 0; stroke: #fff; }
+  20% { opacity: 1; stroke: #fff; }
+  60% { stroke: #ef4444; transform: scale(1); }
+  80% { stroke: #ef4444; opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0; }
+}
+
+/* 5. Ship Sparking Glitch */
+.ship-glitch {
+  opacity: 0;
+  animation: ship-spark 3s infinite;
+}
+@keyframes ship-spark {
+  90% { opacity: 0; } 92% { opacity: 1; } 94% { opacity: 0; } 96% { opacity: 1; } 100% { opacity: 0; }
+}
+
+/* 6. Smoke Puffs rising */
+.smoke-puffs circle {
+  animation: smoke-rise 2s infinite linear;
+}
+.smoke-puffs circle:nth-child(2) { animation-delay: 1s; }
+
+@keyframes smoke-rise {
+  0% { transform: translateY(0) scale(1); opacity: 0.6; }
+  100% { transform: translateY(-15px) scale(2); opacity: 0; }
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+  .nf-container { flex-direction: column; gap: 40px; text-align: center; }
+  .nf-buttons { justify-content: center; }
+  .nf-game-wrapper { width: 100%; height: 500px; max-width: 360px; margin: 0 auto; }
+}
