@@ -282,130 +282,131 @@ const NotFoundPage = () => {
   // Game Loop
   useEffect(() => {
     if (!isPlaying) return;
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    const VIEWPORT_OFFSET = canvas.height - 150;
+    const VIEWPORT_OFFSET = canvas.height - 200; 
 
     const render = () => {
       if (!isPlaying) return;
 
-      // 1. Camera
-      const rocketY = gameState.current.rocket.y;
-      const desiredCameraY = rocketY - VIEWPORT_OFFSET;
-      gameState.current.cameraY +=
-        (desiredCameraY - gameState.current.cameraY) * 0.1;
+      const state = gameState.current;
+      const target = state.planets[state.targetPlanetIndex];
 
-      // Clear
-      ctx.fillStyle = "#020617"; // Matches page bg
+      // 1. ONE-WAY CAMERA (Only moves UP)
+      // We check if rocket is going higher (lower Y) than the offset.
+      // If it goes lower (falling), camera doesn't follow. This enables falling death.
+      const rocketY = state.rocket.y;
+      const desiredCameraY = rocketY - VIEWPORT_OFFSET;
+      
+      // Only move camera if rocket goes UP (desired < current)
+      if (desiredCameraY < state.cameraY) {
+        // Smooth lerp upwards
+        state.cameraY += (desiredCameraY - state.cameraY) * 0.1; 
+      }
+
+      // Clear Canvas
+      ctx.fillStyle = "#020617";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.save();
-      ctx.translate(0, -gameState.current.cameraY);
+      ctx.translate(0, -state.cameraY); 
 
-      const state = gameState.current;
-      const currentPlanet = state.planets[state.targetPlanetIndex - 1];
+      // 2. LOGIC UPDATE
+      const currentPlanet = state.planets[state.targetPlanetIndex - 1]; 
 
-      // 2. Logic
+      // -- STATE: LANDED (ORBIT) --
       if (state.rocket.state === "LANDED") {
         state.rocket.orbitAngle += currentPlanet.rotSpeed;
-        const dist = currentPlanet.r + 20;
-        state.rocket.x =
-          currentPlanet.x + Math.cos(state.rocket.orbitAngle) * dist;
-        state.rocket.y =
-          currentPlanet.y + Math.sin(state.rocket.orbitAngle) * dist;
-        state.rocket.angle = state.rocket.orbitAngle;
-      } else if (state.rocket.state === "FLYING") {
+        const dist = currentPlanet.r + 20; 
+        state.rocket.x = currentPlanet.x + Math.cos(state.rocket.orbitAngle) * dist;
+        state.rocket.y = currentPlanet.y + Math.sin(state.rocket.orbitAngle) * dist;
+        state.rocket.angle = state.rocket.orbitAngle; 
+      } 
+      // -- STATE: FLYING --
+      else if (state.rocket.state === "FLYING") {
         state.rocket.x += Math.cos(state.rocket.angle) * 12;
         state.rocket.y += Math.sin(state.rocket.angle) * 12;
 
-        const target = state.planets[state.targetPlanetIndex];
         const dx = state.rocket.x - target.x;
         const dy = state.rocket.y - target.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const dist = Math.sqrt(dx*dx + dy*dy);
 
-        // Success
-        if (dist <= target.r + 15) {
+        // Success Hit
+        if (dist <= target.r + 20) {
           state.rocket.state = "LANDED";
           state.scoreCount++;
           setScore(state.scoreCount);
           state.targetPlanetIndex++;
-
+          
+          // Generate new planet
           const nextR = Math.max(25, 50 - state.scoreCount);
-          const distGap = 200 + state.scoreCount * 10;
-          const nextY = target.y - distGap;
+          const distGap = 200 + (state.scoreCount * 10);
+          const nextY = target.y - distGap; 
           const margin = 60;
-          const nextX = Math.random() * (canvas.width - margin * 2) + margin;
-
+          const nextX = Math.random() * (canvas.width - margin*2) + margin;
+          
           state.planets.push({
-            x: nextX,
-            y: nextY,
-            r: nextR,
+            x: nextX, y: nextY, r: nextR,
             color: `hsl(${Math.random() * 360}, 70%, 60%)`,
-            rotSpeed:
-              (0.02 + state.scoreCount * 0.002) *
-              (Math.random() < 0.5 ? 1 : -1),
+            rotSpeed: (0.02 + (state.scoreCount * 0.002)) * (Math.random() < 0.5 ? 1 : -1)
           });
-
-          if (state.planets.length > 5) state.planets.shift();
-          state.targetPlanetIndex = state.planets.length - 1;
-          state.rocket.orbitAngle = Math.atan2(dy, dx);
+          
+          if (state.planets.length > 5) state.planets.shift(); 
+          state.targetPlanetIndex = state.planets.length - 1; 
+          state.rocket.orbitAngle = Math.atan2(dy, dx); 
         }
 
-        // Fail
-        if (
-          state.rocket.y < state.cameraY - 200 ||
-          state.rocket.x < -50 ||
-          state.rocket.x > canvas.width + 50
-        ) {
-          endGame();
-          ctx.restore();
-          return;
+        // --- DEATH CONDITIONS (FIXED) ---
+        // 1. Fallen off screen bottom (since camera doesn't follow down)
+        const screenBottom = state.cameraY + canvas.height;
+        if (state.rocket.y > screenBottom + 50) {
+          endGame(); 
+          ctx.restore(); return;
+        }
+
+        // 2. Missed target into deep space (Flew way past target)
+        if (state.rocket.y < target.y - 500) {
+          endGame(); 
+          ctx.restore(); return;
+        }
+
+        // 3. Side bounds
+        if (state.rocket.x < -50 || state.rocket.x > canvas.width + 50) {
+          endGame(); 
+          ctx.restore(); return;
         }
       }
 
-      // 3. Draw Planets
-      state.planets.forEach((p) => {
+      // 3. DRAW
+      state.planets.forEach(p => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
-        ctx.shadowBlur = 30;
-        ctx.shadowColor = p.color;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-        ctx.strokeStyle = "rgba(255,255,255,0.1)";
-        ctx.lineWidth = 2;
-        ctx.stroke();
+        ctx.shadowBlur = 30; ctx.shadowColor = p.color; ctx.fill(); ctx.shadowBlur = 0;
+        ctx.strokeStyle = "rgba(255,255,255,0.1)"; ctx.lineWidth = 2; ctx.stroke();
       });
 
-      // 4. Draw Rocket
+      // Draw Rocket
       ctx.save();
       ctx.translate(state.rocket.x, state.rocket.y);
       ctx.rotate(state.rocket.angle + Math.PI / 2);
       ctx.beginPath();
-      ctx.moveTo(0, -20);
-      ctx.lineTo(10, 10);
-      ctx.lineTo(0, 5);
-      ctx.lineTo(-10, 10);
+      ctx.moveTo(0, -20); ctx.lineTo(10, 10); ctx.lineTo(0, 5); ctx.lineTo(-10, 10);
       ctx.closePath();
-      ctx.fillStyle = "#ffffff";
-      ctx.fill();
+      ctx.fillStyle = "#ffffff"; ctx.fill();
       if (state.rocket.state === "FLYING") {
-        ctx.beginPath();
-        ctx.moveTo(0, 5);
-        ctx.lineTo(5, 25);
-        ctx.lineTo(-5, 25);
-        ctx.fillStyle = "#f59e0b";
-        ctx.fill();
+        ctx.beginPath(); ctx.moveTo(0, 5); ctx.lineTo(5, 25); ctx.lineTo(-5, 25);
+        ctx.fillStyle = "#f59e0b"; ctx.fill();
       }
       ctx.restore();
-      ctx.restore();
-
+      
+      ctx.restore(); // Undo Camera
       animationFrameId.current = requestAnimationFrame(render);
     };
 
     render();
-    return () => {
-      if (animationFrameId.current)
-        cancelAnimationFrame(animationFrameId.current);
+    return () => { 
+      if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current); 
     };
   }, [isPlaying]);
 
