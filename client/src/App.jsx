@@ -11,6 +11,8 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 // NEW
 import LandingPage from "./pages/LandingPage/LandingPage";
+import AuthSuccess from "./pages/auth/AuthSuccess";
+
 
 const App = () => {
   return (
@@ -32,6 +34,15 @@ const App = () => {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/auth/success"
+          element={
+            <ProtectedRoute>
+              <AuthSuccess />
             </ProtectedRoute>
           }
         />
