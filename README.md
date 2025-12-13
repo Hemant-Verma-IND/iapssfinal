@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="[https://github.com/Hemant-Verma-IND/iapss](https://iapss.vercel.app)">
+  <a href="https://iapss.vercel.app">
     <img src="./client/public/logo.svg" alt="IAPSS Logo" width="80" height="80">
   </a>
 
