@@ -1,4 +1,4 @@
-const API_BASE = "https://iapss-backend.onrender.com/api";
+const API_BASE = "http://localhost:4000/api";
 
 export async function uploadProblemImage(file) {
   const formData = new FormData();

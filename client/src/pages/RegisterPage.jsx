@@ -24,7 +24,7 @@ async function handleRegister(e) {
   setLoading(true);
 
   try {
-    const res = await fetch("http://localhost:4000/api/auth/register", {
+    const res = await fetch("https://iapss-backend.onrender.com/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password }),
@@ -44,7 +44,7 @@ async function handleRegister(e) {
     }
 
     // CASE B: backend requires manual login
-    const loginRes = await fetch("http://localhost:4000/api/auth/login", {
+    const loginRes = await fetch("https://iapss-backend.onrender.com/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
