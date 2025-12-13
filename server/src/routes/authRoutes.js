@@ -1,0 +1,111 @@
+import { Router } from "express";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { User } from "../models/User.js";
+
+const router = Router();
+const JWT_SECRET = process.env.JWT_SECRET || "supersecret123";
+const SALT_ROUNDS = 10;
+
+function sendValidationError(res, message) {
+  return res.status(400).json({
+    success: false,
+    code: "VALIDATION_ERROR",
+    message,
+  });
+}
+
+// simple email regex is enough here
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// POST /api/auth/register
+router.post("/register", async (req, res, next) => {
+  try {
+    const { name, email, password } = req.body || {};
+
+    if (!name || name.trim().length < 2) {
+      return sendValidationError(res, "Name must be at least 2 characters.");
+    }
+    if (!email || !EMAIL_REGEX.test(email)) {
+      return sendValidationError(res, "Please provide a valid email address.");
+    }
+    if (!password || password.length < 6) {
+      return sendValidationError(
+        res,
+        "Password must be at least 6 characters long."
+      );
+    }
+
+    const existing = await User.findOne({ email });
+    if (existing) {
+      return res.status(400).json({
+        success: false,
+        code: "EMAIL_IN_USE",
+        message: "This email is already registered.",
+      });
+    }
+
+    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+
+    const user = await User.create({ name, email, passwordHash });
+
+    res.json({
+      success: true,
+      user: { id: user._id, name: user.name, email: user.email },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/google", (req, res) => {
+  res.status(501).json({ message: "Google OAuth not enabled yet" });
+});
+
+router.get("/github", (req, res) => {
+  res.status(501).json({ message: "GitHub OAuth not enabled yet" });
+});
+
+// POST /api/auth/login
+router.post("/login", async (req, res, next) => {
+  try {
+    const { email, password } = req.body || {};
+
+    if (!email || !EMAIL_REGEX.test(email)) {
+      return sendValidationError(res, "Valid email is required.");
+    }
+    if (!password) {
+      return sendValidationError(res, "Password is required.");
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        code: "INVALID_CREDENTIALS",
+        message: "Invalid email or password.",
+      });
+    }
+
+    const ok = await bcrypt.compare(password, user.passwordHash);
+    if (!ok) {
+      return res.status(400).json({
+        success: false,
+        code: "INVALID_CREDENTIALS",
+        message: "Invalid email or password.",
+      });
+    }
+
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "7d" });
+
+    res.json({
+      success: true,
+      token,
+      user: { id: user._id, name: user.name, email: user.email, role: user.role },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+export default router;

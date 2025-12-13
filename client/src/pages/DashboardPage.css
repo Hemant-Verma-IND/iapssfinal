@@ -1,0 +1,250 @@
+:root{
+  --bg: #f6fbff;
+  --surface: #ffffff;
+  --surface-2: #eef7ff;
+  --text: #0b1220;
+  --muted: #566074;
+  --accent: #3b82f6;
+  --accent-2: #60a5fa;
+  --shadow: 0 10px 30px rgba(11,34,90,0.06);
+  --glass: rgba(255,255,255,0.75);
+  --radius: 14px;
+  --gap: 20px;
+  --footer-bg: #eef6ff;
+}
+
+/* Dark (glassmorphic) theme tokens */
+.dp-root--dark {
+  --bg: linear-gradient(#0f172a, #020617);
+  --surface: #1e293b;
+  --surface-2: #334155;
+  --text: #e6eefc;
+  --muted: #ff00001d;
+  --accent: #3b82f6;
+  --accent-2: #60a5fa;
+  --shadow: 0 10px 30px rgba(0,0,0,0.6);
+  --glass: rgba(15, 23, 42, 0.8);
+  --footer-bg: rgba(255,255,255,0.02);
+}
+
+/* Base layout */
+.dp-root {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Header */
+.dp-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 36px;
+  background: transparent;
+  border-bottom: 1px solid rgba(11,34,90,0.04);
+  position: sticky;
+  top:0;
+  z-index:50;
+  backdrop-filter: blur(6px);
+}
+.dp-brand { display:flex; align-items:center; gap:12px; cursor:pointer; }
+.dp-brand-logo {
+  width:46px; height:46px; border-radius:12px;
+  background: linear-gradient(135deg,var(--accent),var(--accent-2));
+  color:white; font-weight:800; display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 10px 30px rgba(59,130,246,0.12);
+}
+.dp-brand-title { font-weight:800; letter-spacing:0.02em; font-size:1.05rem; }
+.dp-brand-sub { font-size:0.82rem; color:var(--var); }
+
+/* header actions */
+.dp-header-actions { display:flex; align-items:center; gap:12px; }
+.dp-theme-toggle {
+  width:40px; height:40px; border-radius:10px; border: none; background:var(--surface);
+  box-shadow: 0 6px 18px rgba(11,34,90,0.06); cursor:pointer; display:flex; align-items:center; justify-content:center;
+}
+.dp-user-block { display:flex; gap:10px; align-items:center; }
+.dp-user-name { font-weight:700; color:var(--text); }
+.dp-logout-btn {
+  padding:8px 12px; border-radius:999px; border:1px solid rgba(11,34,90,0.06);
+  background:transparent; color:var(--accent-2); cursor:pointer; transition:all .18s;
+}
+.dp-logout-btn:hover {
+  transform:translateY(-2px);
+  box-shadow: var(--shadow);
+  color: var(--accent-2);
+  background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(96,165,250,0.04));
+}
+
+/* Main */
+.dp-main { max-width:1200px; margin:24px auto; padding:0 20px 34px; width:100%; display:flex; flex-direction:column; gap:22px; }
+
+/* HERO */
+.dp-hero { display:flex; gap:22px; align-items:flex-start; }
+.card { border-radius:14px; background:var(--surface); padding:22px; box-shadow: var(--shadow); border:1px solid rgba(11,34,90,0.03); }
+.dp-hero-left { flex:1; }
+
+/* hero head */
+.dp-welcome-title { margin:0; font-size:1.8rem; font-weight:900; line-height:1.02; }
+.dp-welcome-sub { margin:8px 0 18px; color:var(--var); }
+
+/* big feature buttons (take more horizontal space) */
+.dp-hero-actions { display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
+.dp-big-btn {
+  display:flex; align-items:center; gap:16px; padding:22px 26px; border-radius:12px;
+  background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:#fff; border:0;
+  min-width:420px; max-width:720px; box-shadow: 0 18px 40px rgba(11,34,90,0.08); cursor:pointer; text-align:left;
+}
+.dp-big-btn-ghost { background: linear-gradient(180deg, rgba(243, 230, 160, 0.77), rgba(162, 251, 176, 0.85)); color:var(--text); border:1px solid rgba(11,34,90,0.04); box-shadow: 0 20px 18px rgba(22, 81, 232, 0.05); }
+.dp-big-btn-left { width:64px; height:64px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:28px; background: rgba(255,255,255,0.12); }
+.dp-big-btn-body { text-align:left; }
+.dp-big-btn-title { font-weight:800; font-size:1.05rem; margin-bottom:6px; }
+.dp-big-btn-desc { font-size:0.95rem; }
+
+/* mid / bottom layout: activity + side column */
+.dp-bottomgrid { display:grid; grid-template-columns: 1fr 340px; gap:22px; align-items:start; }
+
+/* Recent activity */
+.dp-card-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px; }
+.dp-card-title { font-weight:800; font-size:1.05rem; }
+.dp-card-sub { color:var(--var); font-size:0.95rem; margin-left:8px; }
+
+/* activity list */
+.dp-activity-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; }
+.dp-activity-item { display:flex; gap:12px; align-items:flex-start; padding:14px; border-radius:12px;background: var(--surface-2); border:1px solid rgba(11,34,90,0.03); box-shadow: 0 8px 20px rgba(11,34,90,0.04); }
+.dp-activity-time { width:56px; background: var(--var); color: var(--text); text-align:center; font-size:0.9rem; border-radius:6px; padding:4px 8px; }
+.dp-activity-title { font-weight:800; }
+.dp-activity-meta { color: var(--text); font-size:0.9rem; }
+
+/* side column (contests + recommended) */
+.dp-side-column { display:flex; flex-direction:column; gap:16px; }
+.dp-next-contests.small { padding:16px; border-radius:12px; background: var(--surface-2); border:1px solid rgba(11,34,90,0.03); }
+.dp-contest-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+.dp-contest-list li { padding:10px;background: var(--surface-2); border-radius:10px; }
+.dp-contest-list .contest-name { font-weight:800; }
+.dp-contest-list .contest-meta { color: var(--text); font-size:0.92rem; margin-top:6px; }
+
+/* recommended: make cards span full width (single column) */
+.dp-recommended { padding:16px; }
+.dp-problems-grid { display:grid; grid-template-columns: 1fr; gap:14px; }
+
+/* problem card */
+.dp-problem-card { padding:18px; border-radius:12px; background: linear-gradient(180deg,var(--surface), #fbfdff); border:1px solid rgba(11,34,90,0.03); box-shadow: 0 8px 30px rgba(11,34,90,0.04); display:flex; flex-direction:column; gap:10px; }
+.dp-prob-header { display:flex; justify-content:space-between; align-items:center; }
+.dp-prob-title { font-weight:800; font-size:1.05rem; }
+.dp-prob-meta { color:var(--var); font-size:0.92rem; margin-top:4px; display:flex; gap:8px; align-items:center; }
+.dp-prob-actions { margin-top:10px; }
+
+/* difficulty badges */
+.dp-prob-badge { padding:6px 10px; border-radius:999px; font-weight:800; font-size:0.82rem; }
+.dp-badge-Easy { background:#ecffef; color:#059669; }
+.dp-badge-Medium { background:#fff6e6; color:#d97706; }
+.dp-badge-Hard { background:#fff0f3; color:#b91c1c; }
+
+/* stat card (smaller, if used) */
+.dp-statcard { display:flex; align-items:center; gap:12px; padding:12px; border-radius:12px; background: linear-gradient(180deg,#fff,#fbfdff); border:1px solid rgba(11,34,90,0.03); box-shadow: 0 8px 22px rgba(11,34,90,0.04); }
+.dp-stat-icon { width:48px; height:48px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:white; font-size:1.2rem; }
+.dp-stat-texts { display:flex; flex-direction:column; }
+.dp-stat-value { font-weight:800; font-size:1.02rem; }
+.dp-stat-title { color:var(--var); font-size:0.9rem; }
+.dp-stat-delta { margin-left:auto; padding:6px 8px; border-radius:8px; font-weight:700; color:var(--muted); background:rgba(11,34,90,0.03); }
+.dp-stat-delta.up { color:#0f5132; background:rgba(16,185,129,0.08); }
+.dp-stat-delta.down { color:#6b1220; background:rgba(239,68,68,0.06); }
+
+/* quote box */
+.dp-quote-large { margin-top:12px; padding:32px; border-radius:12px; background: linear-gradient(180deg, rgba(250,250,255,0.9), rgba(255,255,255,0.95)); text-align:center; box-shadow: 0 12px 30px rgba(11,34,90,0.04); }
+.dp-quote-text-large { margin:0; font-weight:900; font-size:1.15rem; }
+.dp-quote-author { margin-top:10px; color:var(--var); }
+
+/* footer */
+.dp-footer { display:flex; justify-content:space-between; align-items:center; padding:18px 36px; background: var(--footer-bg); border-top:1px solid rgba(11,34,90,0.03); margin-top:auto; }
+.dp-footer.compact { padding:16px 36px; }
+.dp-link-btn { background:transparent; border:0; color:var(--var); cursor:pointer; margin-left:8px; }
+
+/* buttons */
+.dp-btn { border-radius:999px; padding:8px 14px; border:0; background:transparent; cursor:pointer; font-weight:700; }
+.dp-btn-solid { background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:#fff; box-shadow:0 10px 30px rgba(59,130,246,0.12); border:0; }
+.dp-btn-outline { border:1px solid rgba(11,34,90,0.04); color:var(--text); background:transparent; }
+.dp-btn-ghost { background:transparent; color:var(--muted); border:0; }
+
+/* responsive tweaks */
+@media (max-width: 980px) {
+  .dp-bottomgrid { grid-template-columns: 1fr; }
+  .dp-hero { flex-direction:column; }
+  .dp-big-btn { min-width: auto; width:100%; }
+  .dp-side-column { order:2; }
+  .dp-activity { order:1; }
+}
+
+/* =========================================
+   DARK THEME: Midnight Pro
+   ========================================= */
+
+.dp-root--dark .card,
+.dp-root--dark .dp-problem-card, 
+.dp-root--dark .dp-quote-large {
+  /* Rich deep slate background instead of muddy transparent white */
+  background: linear-gradient(145deg, #1e293b, #0f172a); 
+  
+  /* Lighter, clearer border to define edges */
+  border: 1px solid rgba(148, 163, 184, 0.15); 
+  
+  /* Deep shadow to create actual depth */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* Specific Tweak for "Problem Card" Hover */
+.dp-root--dark .dp-problem-card:hover {
+  background: linear-gradient(145deg, #27354d, #1e293b);
+  border-color: rgba(96, 165, 250, 0.4); /* Blue-ish tint on hover */
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+}
+
+/* Secondary/Small sections */
+.dp-root--dark .dp-next-contests.small {
+  background: #0f172a; /* Flat deep slate */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Main Call-to-Action Button in Dark Mode */
+.dp-root--dark .dp-big-btn {
+  /* Slightly lighter surface to stand out from background */
+  background: linear-gradient(145deg, #253045, #151e32);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.dp-root--dark .dp-big-btn:hover {
+  background: linear-gradient(145deg, #2d3b55, #1a253a);
+  border-color: rgba(96, 165, 250, 0.6); /* Blue accent border on hover */
+}
+
+/* Ghost Button (Outline) in Dark Mode */
+.dp-root--dark .dp-big-btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  color: #e2e8f0; /* Off-white text */
+  box-shadow: none;
+}
+
+.dp-root--dark .dp-big-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: #f8fafc;
+}
+
+/* Make text inside these cards readable */
+.dp-root--dark .dp-big-btn-title,
+.dp-root--dark .dp-prob-title {
+  color: #f1f5f9; /* Bright white-blue */
+}
+
+.dp-root--dark .dp-big-btn-desc,
+.dp-root--dark .dp-prob-meta {
+  color: #94a3b8; /* Soft gray */
+}
+/* reduce excessive vertical gap before footer */
+body, html { height: 100%; }
