@@ -12,10 +12,9 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import { connectDB } from "./config/db.js";
 import passport from "./config/passport.js";
 
+const app = express();
 
 app.use(passport.initialize());
-
-const app = express();
 app.use(express.json({ limit: "10mb" }));
 // secure HTTP headers
 app.use(

@@ -2,6 +2,8 @@ import { Router } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "../models/User.js";
+import passport from "passport";
+
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret123";
