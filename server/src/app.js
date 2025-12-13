@@ -23,7 +23,7 @@ app.use(
 
 app.use(
   cors({
-    origin: CLIENT_ORIGIN,
+    origin: ["https://iapss.vercel.app", CLIENT_ORIGIN],
     credentials: true,
   })
 );
