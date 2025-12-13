@@ -81,9 +81,36 @@ router.get(
   }
 );
 
-router.get("/github", (req, res) => {
-  res.status(501).json({ message: "GitHub OAuth not enabled yet" });
-});
+// 1. Redirect to GitHub
+// GET /api/auth/github
+router.get(
+  '/github',
+  passport.authenticate('github', { scope: ['user:email'] })
+);
+
+// 2. Callback from GitHub
+// GET /api/auth/github/callback
+router.get(
+  '/github/callback',
+  passport.authenticate('github', { failureRedirect: '/login', session: false }),
+  (req, res) => {
+    // Generate Token
+    const token = jwt.sign(
+      { id: req.user._id, email: req.user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    const userString = encodeURIComponent(JSON.stringify({ 
+      name: req.user.name, 
+      email: req.user.email 
+    }));
+
+    // Redirect to same success page as Google
+    res.redirect(`${process.env.CLIENT_URL}/auth-success?token=${token}&user=${userString}`);
+  }
+);
+
 
 // POST /api/auth/login
 router.post("/login", async (req, res, next) => {
