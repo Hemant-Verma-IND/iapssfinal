@@ -181,7 +181,7 @@ export default function CodeAnalyserPage() {
         </button>
 
         <div className="ca-nav-center">
-          <span className="ca-brand" onClick={() => navigate("/")}
+          <span className="ca-brand" onClick={() => navigate("/dashboard")}
           style={{ cursor: "pointer" }}>IAPSS</span>
           <span className="ca-sep">/</span>
           <span className="ca-title">Code Analyser</span>
