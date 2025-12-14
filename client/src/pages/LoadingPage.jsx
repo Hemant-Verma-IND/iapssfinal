@@ -16,7 +16,10 @@ const LoadingPage = () => {
         {/* Foreground content */}
         <div className="loading-card">
           <header className="loading-header">
-            <div>
+            <div
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
+          >
               <h1 className="logo-text">IAPSS</h1>
               <p className="logo-subtitle">
                 Intelligent Academic Problem-Solving System

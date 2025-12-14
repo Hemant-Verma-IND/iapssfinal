@@ -91,7 +91,10 @@ async function handleRegister(e) {
       <div className="auth-wrapper">
         <div className="auth-card">
           <div className="auth-card-header">
-            <div className="auth-brand">
+            <div className="auth-brand"
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
+          >
               <span className="brand-logo">IA</span>
               <div className="brand-text-col">
                 <span className="brand-name">IAPSS</span>

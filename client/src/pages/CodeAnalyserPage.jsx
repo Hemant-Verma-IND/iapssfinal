@@ -181,7 +181,8 @@ export default function CodeAnalyserPage() {
         </button>
 
         <div className="ca-nav-center">
-          <span className="ca-brand">IAPSS</span>
+          <span className="ca-brand" onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}>IAPSS</span>
           <span className="ca-sep">/</span>
           <span className="ca-title">Code Analyser</span>
           <button className="ca-theme-toggle" onClick={() => setIsDark(!isDark)}>

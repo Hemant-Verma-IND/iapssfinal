@@ -222,7 +222,8 @@ const runAnalysis = async () => {
         
         {/* CENTER BRANDING */}
         <div className="pa-nav-center">
-          <span className="pa-brand-text">IAPSS</span>
+          <span className="pa-brand-text" onClick={() => navigate("/dashboard")}
+          style={{ cursor: "pointer" }}>IAPSS</span>
           <span className="pa-sep">/</span>
           <span className="pa-page-title">Problem Analyser</span>
           <button className="pa-theme-toggle" 
