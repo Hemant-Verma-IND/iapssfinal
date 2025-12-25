@@ -9,12 +9,12 @@ export default function AuthSuccess() {
     const token = params.get("token");
 
     if (token) {
-      localStorage.setItem("iapss_token", token);
-      navigate("/dashboard");
+      localStorage.setItem("token", token);
+      window.location.href = "/dashboard";
     } else {
-      navigate("/login");
+      window.location.href = "/login";
     }
-  }, [navigate]);
+  }, []);
 
   return <p>Signing you in...</p>;
 }
