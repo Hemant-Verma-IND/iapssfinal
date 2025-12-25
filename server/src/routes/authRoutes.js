@@ -78,7 +78,7 @@ router.get(
     );
 
     // FIX 2: Direct redirect to Dashboard
-    res.redirect(`${CLIENT_ORIGIN}/dashboard?token=${token}`);
+    res.redirect(`${CLIENT_ORIGIN}/auth-success?token=${token}`);
   }
 );
 
