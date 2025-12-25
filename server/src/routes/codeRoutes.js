@@ -194,7 +194,7 @@ router.post("/analyse", async (req, res, next) => {
       // NEW: result = await analyseCode(code, language); 
       
       // Since I am forcing errors for Demo Mode anyway:
-      throw new Error("AI disabled (demo mode)"); 
+      // throw new Error("AI disabled (demo mode)"); 
 
     } catch (err) {
       console.error("❌ Code analysis failed, demo mode:", err.message);
