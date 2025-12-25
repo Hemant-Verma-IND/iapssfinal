@@ -9,6 +9,7 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "/api/auth/google/callback",
+      proxy: true,
     },
     async (_accessToken, _refreshToken, profile, done) => {
       try {
@@ -16,13 +17,22 @@ passport.use(
 
         let user = await User.findOne({ email });
 
-        if (!user) {
-          user = await User.create({
-            name: profile.displayName,
-            email,
-            provider: "google",
-          });
+        if (user) {
+          // 2. If user exists but has no googleId, link it now
+          if (!user.googleId) {
+            user.googleId = profile.id;
+            await user.save();
+          }
+          return done(null, user);
         }
+
+        // 3. Create new user
+        user = await User.create({
+          name: profile.displayName,
+          email,
+          googleId: profile.id, // <--- Save this specifically
+          provider: "google",
+        });
 
         return done(null, user);
       } catch (err) {
@@ -39,7 +49,8 @@ passport.use(
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
       callbackURL: process.env.GITHUB_CALLBACK_URL,
       scope: ['user:email'], 
-      allEmails: true 
+      allEmails: true,
+      proxy: true,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -79,5 +90,21 @@ passport.use(
     }
   )
 );
+
+// --- SERIALIZATION (REQUIRED) ---
+// This tells Passport how to save the user ID to the session/req.user
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+// This finds the user in the DB when a request comes in
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err, null);
+  }
+});
 
 export default passport;
