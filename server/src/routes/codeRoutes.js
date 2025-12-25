@@ -198,6 +198,7 @@ router.post("/analyse", async (req, res, next) => {
 
       // ✅ DEMO FALLBACK
       result = {
+        alert: "⚠️ AI analysis is currently unavailable. Showing demo analysis.",
         summary: "Demo analysis (AI unavailable)",
         complexity: "O(N log N)", // Example
         space: "O(N)",

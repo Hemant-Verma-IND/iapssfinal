@@ -1,44 +1,65 @@
 import { callGemini } from "./geminiClient.js";
 
 export async function analyseCode(code, language) {
+  // 1. Updating Prompt to match Frontend requirements EXACTLY
   const prompt = `
 You are a senior competitive programming reviewer.
 
-Return JSON EXACTLY:
+Analyze this ${language} code.
+Return a RAW JSON object with NO Markdown formatting (no \`\`\`json).
+
+The JSON must strictly follow this schema:
 {
-  "complexity": "",
-  "space": "",
-  "score": 0,
+  "summary": "Brief explanation of what the code does",
+  "complexity": "Time complexity (e.g. O(N))",
+  "space": "Space complexity (e.g. O(1))",
+  "score": 85,
   "issues": [
-    { "type": "", "text": "" }
+    { "type": "Bug/Optimization/Style", "text": "Short description" }
   ],
-  "security": "",
-  "refactor": ""
+  "refactor": "The optimized version of the code",
+  "tests": ["Edge case 1", "Edge case 2"]
 }
 
-Code (${language}):
+Code:
 ${code}
 `;
 
-  const raw = await callGemini(prompt);
-
   try {
-    const json = raw.slice(raw.indexOf("{"), raw.lastIndexOf("}") + 1);
-    return JSON.parse(json);
-  } catch {
-    return demoCodeAnalysis();
+    const raw = await callGemini(prompt);
+
+    // 2. Clean the output (Gemini often adds ```json ... ```)
+    const cleanRaw = raw.replace(/```json/g, "").replace(/```/g, "").trim();
+    
+    // 3. Extract JSON safely
+    const jsonStartIndex = cleanRaw.indexOf("{");
+    const jsonEndIndex = cleanRaw.lastIndexOf("}");
+    
+    if (jsonStartIndex === -1 || jsonEndIndex === -1) {
+      throw new Error("No JSON found in AI response");
+    }
+
+    const jsonString = cleanRaw.slice(jsonStartIndex, jsonEndIndex + 1);
+    
+    return JSON.parse(jsonString);
+
+  } catch (err) {
+    console.error("AI Parse Error:", err);
+    return demoCodeAnalysis(); // Fallback on error
   }
 }
 
+// Ensure your fallback matches the frontend structure too
 function demoCodeAnalysis() {
   return {
-    complexity: "O(N log N)",
-    space: "O(N)",
-    score: 70,
+    summary: "Analysis failed. Showing demo data.",
+    complexity: "O(N)",
+    space: "O(1)",
+    score: 50,
     issues: [
-      { type: "Logic", text: "Fails for empty input." }
+      { type: "Error", text: "AI service could not process the request." }
     ],
-    security: "Safe",
-    refactor: "Use long long to avoid overflow."
+    refactor: "// No refactor available",
+    tests: []
   };
 }
