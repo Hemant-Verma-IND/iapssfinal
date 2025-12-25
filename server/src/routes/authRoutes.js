@@ -8,6 +8,7 @@ import passport from "passport";
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret123";
 const SALT_ROUNDS = 10;
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "http://localhost:5173";
 
 function sendValidationError(res, message) {
   return res.status(400).json({
