@@ -69,21 +69,17 @@ router.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),
   (req, res) => {
-    // 1. FIX: Use 'id' instead of 'userId' to match Login/GitHub payload
+    // FIX 1: Use 'id' to match standard payload
     const token = jwt.sign(
       { id: req.user._id }, 
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-    // 2. FIX: Use '/auth-success' to match the GitHub route
-    // Also ensures we use the correct environment variable for frontend URL
-    const clientUrl = process.env.CLIENT_ORIGIN || process.env.CLIENT_URL || "http://localhost:5173";
-    
-    res.redirect(`${clientUrl}/auth-success?token=${token}`);
+    // FIX 2: Direct redirect to Dashboard
+    res.redirect(`${CLIENT_ORIGIN}/dashboard?token=${token}`);
   }
 );
-
 
 // 1. Redirect to GitHub
 // GET /api/auth/github
