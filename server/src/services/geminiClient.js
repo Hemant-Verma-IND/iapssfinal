@@ -16,7 +16,7 @@ export async function callGemini(prompt) {
   }
 
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-pro",
+    model: "gemini-flash-latest",
   });
 
   const result = await model.generateContent(prompt);

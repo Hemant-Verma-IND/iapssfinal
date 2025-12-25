@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ProblemAnalyserPage.css";
+import Tesseract from "tesseract.js";
 // import { getAuth } from "../utils/auth"; // Uncomment for real auth
 import { apiRequest } from "../services/api";
 import { demoProblemAnalysis } from "../services/demoProblemAnalysis";
@@ -118,73 +119,102 @@ useEffect(() => {
 
 
 const runAnalysis = async () => {
-  if (!problemText && images.length === 0) {
-    alert("Please describe the problem or paste a screenshot.");
-    return;
-  }
-
-  setLoading(true);
-  setAnalysis(null);
-  setActiveHint(null);
-
-  try {
-    const result = await apiRequest("/problems/analyse", {
-      method: "POST",
-      body: JSON.stringify({
-        text: problemText,
-        images: images.map(img => img.url),
-      }),
-    });
-
-    // 🔒 HARD VALIDATION — do not trust backend blindly
-    if (
-      !result ||
-      !Array.isArray(result.topic) ||
-      !Array.isArray(result.hints) ||
-      result.hints.length !== 3 ||
-      typeof result.summary !== "string" ||
-      typeof result.approach !== "string"
-    ) {
-      throw new Error("Invalid analysis format from backend");
+    if (!problemText && images.length === 0) {
+      alert("Please describe the problem or paste a screenshot.");
+      return;
     }
 
-    // ✅ Backend response accepted
-    setAnalysis(result);
+    setLoading(true);
+    setAnalysis(null);
+    setActiveHint(null);
 
-    setHistory(prev => [
-      {
-        id: Date.now(),
-        title: problemText.substring(0, 20) || "Problem Analysis",
-        date: "Just now",
-        data: result,
-      },
-      ...prev,
-    ]);
+    try {
+      let combinedText = problemText;
 
-  } catch (err) {
-    // 🚨 NEVER SILENTLY FAIL
-    console.error("Problem analysis failed. Switching to demo mode.", err);
-    alert(
-      "AI analysis service is currently unavailable.\nShowing demo analysis instead."
-    );
+      // --- START CHANGE: OCR PROCESS ---
+      // If there are images, convert them to text using Tesseract.js
+      if (images.length > 0) {
+        console.log("Processing images with OCR...");
+        
+        // Map all images to Tesseract promises
+        const ocrPromises = images.map((img) => 
+          Tesseract.recognize(
+            img.url,
+            'eng', // Language code
+            { 
+              logger: m => console.log(m) // Optional: logs progress to console
+            }
+          )
+        );
 
-    const demoResult = demoProblemAnalysis();
+        // Wait for all images to be converted
+        const results = await Promise.all(ocrPromises);
+        
+        // Extract the text strings and join them
+        const extractedText = results.map(result => result.data.text).join("\n\n");
+        
+        // Append extracted text to the main problem text
+        combinedText += `\n\n[Extracted from Images]:\n${extractedText}`;
+        console.log(combinedText);
+      }
+      // --- END CHANGE: OCR PROCESS ---
 
-    setAnalysis(demoResult);
+      const result = await apiRequest("/problems/analyse", {
+        method: "POST",
+        body: JSON.stringify({
+          text: combinedText, // We send the combined text (Typed + OCR Result)
+          images: [], // We clear images since we converted them to text
+        }),
+      });
 
-    setHistory(prev => [
-      {
-        id: Date.now(),
-        title: "Demo Analysis",
-        date: "Offline / Fallback",
-        data: demoResult,
-      },
-      ...prev,
-    ]);
-  } finally {
-    setLoading(false);
-  }
-};
+      // 🔒 HARD VALIDATION — do not trust backend blindly
+      if (
+        !result ||
+        !Array.isArray(result.topic) ||
+        !Array.isArray(result.hints) ||
+        result.hints.length !== 3 ||
+        typeof result.summary !== "string" ||
+        typeof result.approach !== "string"
+      ) {
+        throw new Error("Invalid analysis format from backend");
+      }
+
+      // ✅ Backend response accepted
+      setAnalysis(result);
+
+      setHistory((prev) => [
+        {
+          id: Date.now(),
+          title: combinedText.substring(0, 20) || "Problem Analysis",
+          date: "Just now",
+          data: result,
+        },
+        ...prev,
+      ]);
+    } catch (err) {
+      // 🚨 NEVER SILENTLY FAIL
+      console.error("Problem analysis failed. Switching to demo mode.", err);
+      alert(
+        "AI analysis service is currently unavailable.\nShowing demo analysis instead."
+      );
+
+      const demoResult = demoProblemAnalysis();
+
+      setAnalysis(demoResult);
+
+      setHistory((prev) => [
+        {
+          id: Date.now(),
+          title: "Demo Analysis",
+          date: "Offline / Fallback",
+          data: demoResult,
+        },
+        ...prev,
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   // --- Load from History Function ---
