@@ -6,6 +6,7 @@ import { auth } from "../middleware/auth.js";
 import { CodeHistory } from "../models/CodeHistory.js";
 import rateLimit, { ipKeyGenerator } from "express-rate-limit";
 import { updateUserStats } from "../services/userStatsService.js";
+import { analyseCode } from "../services/codeService.js";
 
 const router = Router();
 
@@ -186,6 +187,8 @@ router.post("/analyse", async (req, res, next) => {
 
     let result;
     try {
+      console.log("🤖 Sending to Gemini...");
+      result = await analyseCode(code, language); 
       // 🚨 BUG FIX HERE: 
       // OLD: result = await analyseProblem(text); // 'text' is undefined!
       // NEW: result = await analyseCode(code, language); 
