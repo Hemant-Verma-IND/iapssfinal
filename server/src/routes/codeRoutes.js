@@ -173,8 +173,8 @@ router.post("/save", auth, userHeavyLimiter, async (req, res, next) => {
 router.post("/analyse", async (req, res, next) => {
   try {
     console.log("🔥 /code/analyse hit");
-    console.log("BODY:", req.body);
-
+    
+    // 1. Extract 'code' (not text)
     const { code, language } = req.body || {};
 
     if (!code || !code.trim()) {
@@ -186,29 +186,30 @@ router.post("/analyse", async (req, res, next) => {
 
     let result;
     try {
-      result = await analyseProblem(text);
-      // 🔮 REAL AI CALL (when available)
-      // result = await analyseCode(code, language);
+      // 🚨 BUG FIX HERE: 
+      // OLD: result = await analyseProblem(text); // 'text' is undefined!
+      // NEW: result = await analyseCode(code, language); 
+      
+      // Since I am forcing errors for Demo Mode anyway:
+      throw new Error("AI disabled (demo mode)"); 
 
-      // ❌ TEMP: force demo until Gemini stabilises
-      throw new Error("AI disabled (demo mode)");
     } catch (err) {
       console.error("❌ Code analysis failed, demo mode:", err.message);
 
-      // ✅ DEMO FALLBACK (INTERVIEW SAFE)
+      // ✅ DEMO FALLBACK
       result = {
         summary: "Demo analysis (AI unavailable)",
-        complexity: "O(N log N)",
+        complexity: "O(N log N)", // Example
         space: "O(N)",
         score: 70,
         issues: [
-          "Potential overflow in summation loop",
-          "Edge case: empty input not handled",
-          "Variable naming can be improved",
+          { type: "Warning", text: "Potential overflow in loop" }, // Updated format to match frontend object structure
+          { type: "Notice", text: "Variable naming can be improved" }
         ],
         security: "No unsafe memory operations detected",
-        refactor:
-          "// Use long long for sums\nlong long sum = 0;\nfor (auto v : arr) sum += v;",
+        refactor: "// Use long long for sums\nlong long sum = 0;\nfor (auto v : arr) sum += v;",
+        // Make sure 'tests' exists because your frontend checks: !Array.isArray(result.tests)
+        tests: [], 
         demo: true,
       };
     }

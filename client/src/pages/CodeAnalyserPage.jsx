@@ -69,8 +69,9 @@ export default function CodeAnalyserPage() {
   }, [isDark]);
 
   // --- FILE HANDLING ---
+  const [uploadedFile, setUploadedFile] = useState(null); 
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
@@ -82,86 +83,111 @@ export default function CodeAnalyserPage() {
     else if (name.endsWith(".js")) setLanguage("javascript");
     else if (name.endsWith(".cpp") || name.endsWith(".c")) setLanguage("cpp");
 
+    // 2. Read file to show text in editor
     const reader = new FileReader();
     reader.onload = (ev) => {
       setCode(ev.target.result);
     };
     reader.readAsText(file);
-  };
 
+    // 3. Upload file to backend (Bridge Logic)
+    const formData = new FormData();
+    formData.append("code", file);
+
+    try {
+      const res = await fetch("/api/code/upload-code", { 
+        method: "POST",
+        body: formData,
+      });
+      
+      const data = await res.json();
+      
+      if (data.success) {
+        console.log("File uploaded successfully:", data.file.url);
+        setUploadedFile(data.file); 
+      } else {
+        console.error("Upload failed:", data.message);
+      }
+    } catch (err) {
+      console.error("Network error during upload:", err);
+    }
+  };
   // --- ANALYSIS ---
 
   const runAnalysis = async () => {
-  if (!code.trim()) {
-    alert("Please paste your code or upload a file first.");
-    return;
-  }
-
-  setLoading(true);
-  setAnalysis(null);
-
-  try {
-    const result = await apiRequest("/code/analyse", {
-      method: "POST",
-      body: JSON.stringify({
-        code,
-        language,
-      }),
-    });
-
-    // 🔒 HARD VALIDATION — DO NOT TRUST AI OUTPUT
-    if (
-      !result ||
-      typeof result.summary !== "string" ||
-      typeof result.complexity !== "string" ||
-      !Array.isArray(result.issues) ||
-      !Array.isArray(result.tests)
-    ) {
-      throw new Error("Invalid code analysis format from backend");
+    // 1. Validation
+    if (!code.trim()) {
+      alert("Please paste your code or upload a file first.");
+      return;
     }
 
-    // ✅ Backend response accepted
-    setAnalysis(result);
+    setLoading(true);
+    setAnalysis(null);
 
-    setHistory(prev => [
-      {
-        id: Date.now(),
-        title: `${language.toUpperCase()} Analysis`,
-        date: "Just now",
-        code,
-        language,
-        data: result,
-      },
-      ...prev,
-    ]);
+    try {
+      // 2. Call the Analysis API
+      const result = await apiRequest("/code/analyse", {
+        method: "POST",
+        body: JSON.stringify({
+          code,
+          language,
+        }),
+      });
 
-  } catch (err) {
-    // 🚨 ABSOLUTE FALLBACK GUARANTEE
-    console.error("Code analysis failed. Switching to demo mode.", err);
+      // 3. Validation
+      if (
+        !result ||
+        typeof result.summary !== "string" ||
+        typeof result.complexity !== "string" ||
+        !Array.isArray(result.issues) ||
+        !Array.isArray(result.tests)
+      ) {
+        throw new Error("Invalid code analysis format from backend");
+      }
 
-    alert(
-      "Code analysis service is currently unavailable.\nShowing demo analysis instead."
-    );
+      // 4. Success State Update
+      setAnalysis(result);
 
-    const demoResult = demoCodeAnalysis();
+      setHistory(prev => [
+        {
+          id: Date.now(),
+          title: uploadedFile ? `File: ${uploadedFile.originalName}` : `${language.toUpperCase()} Analysis`,
+          date: "Just now",
+          code,
+          language,
+          files: uploadedFile ? [uploadedFile] : [],
+          data: result,
+        },
+        ...prev,
+      ]);
 
-    setAnalysis(demoResult);
+    } catch (err) {
+      // 5. Fallback / Demo Mode
+      console.error("Code analysis failed. Switching to demo mode.", err);
 
-    setHistory(prev => [
-      {
-        id: Date.now(),
-        title: "Demo Code Analysis",
-        date: "Offline / Fallback",
-        code,
-        language,
-        data: demoResult,
-      },
-      ...prev,
-    ]);
-  } finally {
-    setLoading(false);
-  }
-};
+      alert(
+        "Code analysis service is currently unavailable.\nShowing demo analysis instead."
+      );
+
+      const demoResult = demoCodeAnalysis();
+
+      setAnalysis(demoResult);
+
+      setHistory(prev => [
+        {
+          id: Date.now(),
+          title: "Demo Code Analysis",
+          date: "Offline / Fallback",
+          code,
+          language,
+          data: demoResult,
+        },
+        ...prev,
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   // Restores Logic + Results
