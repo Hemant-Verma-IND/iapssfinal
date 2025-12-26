@@ -30,7 +30,7 @@ passport.use(
         user = await User.create({
           name: profile.displayName,
           email,
-          googleId: profile.id, // <--- Save this specifically
+          googleId: profile.id, // 
           provider: "google",
         });
 
@@ -51,11 +51,14 @@ passport.use(
       scope: ['user:email'], 
       allEmails: true,
       proxy: true,
+      userAgent: "iapss-app", 
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
         // GitHub specific email handling (GitHub might verify emails privately)
-        const email = profile.emails && profile.emails[0] ? profile.emails[0].value : null;
+        const emails = profile.emails || [];
+        const primaryEmail = emails.find((e) => e.primary) || emails[0];
+        const email = primaryEmail ? primaryEmail.value : null;
 
         if (!email) {
           // If user has set email to private on GitHub, we might not get it easily.

@@ -82,7 +82,7 @@ router.get(
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", { session: false }),
+  passport.authenticate("google", { session: false, failureRedirect: `${CLIENT_ORIGIN}/login` }),
   (req, res) => {
     const token = jwt.sign({ id: req.user._id }, JWT_SECRET, { expiresIn: "7d" });
     redirectWithAuth(res, req.user, token);
@@ -97,7 +97,7 @@ router.get(
 
 router.get(
   "/github/callback",
-  passport.authenticate("github", { failureRedirect: "/login", session: false }),
+  passport.authenticate("github", { failureRedirect: `${CLIENT_ORIGIN}/login`, session: false }),
   (req, res) => {
     const token = jwt.sign({ id: req.user._id }, JWT_SECRET, { expiresIn: "7d" });
     redirectWithAuth(res, req.user, token);
