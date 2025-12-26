@@ -248,3 +248,150 @@
 }
 /* reduce excessive vertical gap before footer */
 body, html { height: 100%; }
+
+/* --- Base Interactive Card (Reset Link Styles) --- */
+.clickable-card,
+.clickable-card:visited,
+.clickable-card:active {
+  display: flex;
+  text-decoration: none;
+  color: var(--text-main) !important; /* Forces your color over browser defaults */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  position: relative;
+  border: 1px solid transparent; /* Prevents jitter on hover */
+}
+
+/* --- Hover Effects --- */
+.clickable-card:hover {
+  background-color: var(--gb-50);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: var(--gb-200);
+}
+
+.clickable-card:hover .dp-icon-action {
+  color: var(--gb-600);
+  transform: translateX(3px);
+}
+
+.clickable-card:hover .dp-activity-dot {
+  background: var(--gb-600);
+  box-shadow: 0 0 0 2px var(--gb-200);
+}
+
+/* --- Activity Item Layout --- */
+.dp-activity-item {
+  align-items: flex-start;
+  padding: 12px;
+  gap: 14px;
+  /* Visual separator logic */
+  border-bottom: 1px solid var(--border-soft); 
+  margin-bottom: 8px;
+}
+
+/* Remove border from last item or when hovering (optional clean look) */
+.dp-activity-item:last-child, .dp-activity-item:hover {
+  border-bottom-color: transparent;
+}
+
+/* Timeline Left Side */
+.dp-activity-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 5px; /* Aligns dot with title text */
+  width: 16px; 
+}
+
+.dp-activity-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--gb-300);
+  border-radius: 50%;
+  z-index: 2;
+  transition: background 0.2s;
+}
+
+.dp-activity-line {
+  width: 2px;
+  background: var(--border-soft);
+  flex: 1; /* Stretches line to fill height */
+  margin-top: -2px; 
+  min-height: 20px;
+}
+
+.dp-activity-item:last-child .dp-activity-line {
+  display: none; /* Hide line on last item */
+}
+
+.dp-activity-content {
+  flex: 1;
+}
+
+/* --- Contest Row Layout --- */
+.dp-contest-row {
+  align-items: center;
+  padding: 12px;
+  gap: 14px;
+}
+
+.dp-contest-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--gb-100);
+  color: var(--gb-700);
+  font-weight: 700;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.dp-contest-info {
+  flex: 1;
+}
+
+.dp-contest-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.dp-contest-meta {
+  font-size: 0.8rem;
+  color: var(--text-sub);
+  margin-top: 2px;
+}
+
+/* --- Common Arrow Icon --- */
+.dp-icon-action {
+  font-size: 1.2rem;
+  color: var(--gb-300);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.dp-contest-icon {
+  width: 42px;
+  height: 42px;
+  /* Remove the solid background color */
+  background: var(--gb-50); 
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Optional: Special style if you want them strictly transparent */
+.dp-contest-icon.logo-mode {
+  background: transparent; 
+  border: 1px solid var(--gb-100);
+}
+
+/* In Dark Mode, fix the AtCoder/CodeChef colors */
+:root[data-theme="dark"] .dp-contest-icon svg {
+  color: #fff !important; /* Make black logos white in dark mode */
+}

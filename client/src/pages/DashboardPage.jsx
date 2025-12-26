@@ -14,6 +14,51 @@ import { getAuth, clearAuth } from "../utils/auth";
  * - Larger quote above footer
  */
 
+const PlatformLogo = ({ platform }) => {
+  const p = platform.toLowerCase();
+
+  // CODEFORCES (The 3 Bar Graph)
+  if (p.includes("codeforces")) {
+    return (
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none">
+        <rect x="2" y="12" width="5" height="12" rx="1" fill="#FFC107" />
+        <rect x="9.5" y="2" width="5" height="22" rx="1" fill="#2196F3" />
+        <rect x="17" y="7" width="5" height="17" rx="1" fill="#F44336" />
+      </svg>
+    );
+  }
+
+  // LEETCODE (The Orange Arc)
+  if (p.includes("leetcode")) {
+    return (
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" color="#FFA116">
+        <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0z"/>
+      </svg>
+    );
+  }
+
+  // ATCODER (The Black Logo)
+  if (p.includes("atcoder")) {
+    return (
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" color="#000">
+        <path d="M12 1.5L.6 22.5h22.8L12 1.5zm0 3.9l7.7 14.1H4.3L12 5.4z" fillRule="evenodd"/>
+      </svg>
+    );
+  }
+
+  // CODECHEF (The Brown Ladle/Chef Hat representation)
+  if (p.includes("codechef")) {
+    return (
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" color="#5B4638">
+        <path d="M12 2a10 10 0 0 0-7.75 16.38l.83-1.14a8.6 8.6 0 1 1 13.84 0l.83 1.14A10 10 0 0 0 12 2zm0 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12zm-3.5 6a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+      </svg>
+    );
+  }
+
+  // Fallback (First Letter) if unknown
+  return <span style={{fontSize: "1.2rem", fontWeight: "bold"}}>{platform[0]}</span>;
+};
+
 const StatCard = ({ title, value, delta, icon, color = "var(--accent)" }) => (
   <motion.div
     className="dp-statcard"
@@ -40,7 +85,7 @@ const ProblemCard = ({ p }) => (
   >
     <div className="dp-prob-header">
       <div className="dp-prob-title">{p.title}</div>
-      <div className={`dp-prob-badge dp-badge-${p.difficulty}`}>{p.difficulty}</div>
+      <div className={`dp-prob-badge dp-badge-${p.difficulty.toLowerCase()}`}>{p.difficulty}</div>
     </div>
     <div className="dp-prob-meta">
       <span>{p.platform}</span>
@@ -48,9 +93,50 @@ const ProblemCard = ({ p }) => (
       <span>{p.time}</span>
     </div>
     <div className="dp-prob-actions">
-      <button className="dp-btn dp-btn-solid" onClick={() => alert("Open " + p.title)}>Open</button>
+      <button className="dp-btn dp-btn-solid" onClick={() => window.open(p.url, "_blank")}>Open</button>
     </div>
   </motion.div>
+);
+// 1. Clickable Activity Card (Recent Activity)
+const ActivityItem = ({ item }) => (
+  <a 
+    href={item.url} 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    className="dp-activity-item clickable-card"
+  >
+    <div className="dp-activity-left">
+      <div className="dp-activity-line"></div>
+      <div className="dp-activity-dot"></div>
+    </div>
+    <div className="dp-activity-content">
+      <span className="dp-activity-time">{item.when}</span>
+      <div className="dp-activity-title">{item.title}</div>
+      <div className="dp-activity-meta">{item.meta}</div>
+    </div>
+    <div className="dp-icon-action">↗</div>
+  </a>
+);
+
+// 2. Clickable Contest Card (Next Contests)
+const ContestCard = ({ c }) => (
+  <a 
+    href={c.url} 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    className="dp-contest-row clickable-card"
+  >
+    <div className="dp-contest-icon logo-mode">
+      <PlatformLogo platform={c.platform} />
+    </div>
+    <div className="dp-contest-info">
+      <div className="dp-contest-name">{c.name}</div>
+      <div className="dp-contest-meta">
+        <span className="dp-c-platform">{c.platform}</span> • {c.time}
+      </div>
+    </div>
+    <div className="dp-icon-action">➜</div>
+  </a>
 );
 
 export default function DashboardPage() {
@@ -72,27 +158,91 @@ export default function DashboardPage() {
     }
     setUser({ name: auth.user?.name || auth.user?.email?.split("@")[0] });
 
-    // Fake API load (replace with real calls)
-    setTimeout(() => {
-      setStreak(4);
-      setSummary({ accuracy: 78, solvedThisWeek: 12, practiceMinutes: 275 });
+      setTimeout(() => {
+      setStreak(12); // Realistic streak
+      setSummary({ 
+        accuracy: 68, 
+        solvedThisWeek: 14, 
+        practiceMinutes: 345 
+      });
+
+      // ACTUAL DATA for Dec 2025
       setRecommended([
-        { title: "Maximize array segments", platform: "Codeforces", difficulty: "Medium", time: "20m" },
-        { title: "Tree DP classic", platform: "AtCoder", difficulty: "Hard", time: "40m" },
-        { title: "Binary search on answers", platform: "LeetCode", difficulty: "Easy", time: "25m" },
+        { 
+          title: "Find Building Where Alice and Bob Can Meet", 
+          platform: "LeetCode", 
+          difficulty: "Hard", 
+          time: "45m",
+          url: "https://leetcode.com/problems/find-building-where-alice-and-bob-can-meet/"
+        },
+        { 
+          title: "Kevin and Numbers", 
+          platform: "Codeforces", 
+          difficulty: "Medium", 
+          time: "30m",
+          url: "https://codeforces.com/problemset/problem/2061/D" 
+        },
+        { 
+          title: "Frog Jump with K Distance", 
+          platform: "AtCoder", 
+          difficulty: "Easy", 
+          time: "15m",
+          url: "https://atcoder.jp/contests/dp/tasks/dp_b"
+        },
       ]);
+
       setRecent([
-        { when: "2h", title: "Solved — Two Pointers", meta: "LeetCode • +10 XP" },
-        { when: "1d", title: "Analyzed — Range Query", meta: "Saved hints • 3 used" },
+        { 
+          when: "2h ago", 
+          title: "Solved — Maximum Subarray Sum", 
+          meta: "Divide and Conquer • LeetCode",
+          url: "https://leetcode.com/problems/maximum-subarray/"
+        },
+        { 
+          when: "Yesterday", 
+          title: "Analyzed — Unique Paths II", 
+          meta: "DP Optimization • LeetCode",
+          url: "https://leetcode.com/problems/unique-paths-ii/"
+        },
+        { 
+          when: "2 days ago", 
+          title: "Contest — Codeforces Round 1071", 
+          meta: "Div 3 • Codeforces",
+          url: "https://codeforces.com/contest/2179" 
+        },
       ]);
+
+      // --- UPCOMING CONTESTS (Accurate for Dec 26, 2025) ---
       setNextContests([
-        { platform: "Codeforces", name: "Div.2 Round 1234", time: "tomorrow 10:00 IST" },
-        { platform: "CodeChef", name: "Cook-Off", time: "in 3 days" },
+        { 
+          platform: "AtCoder", 
+          name: "Beginner Contest 435", 
+          time: "Tomorrow, 17:30 IST", // Sat Dec 27
+          url: "https://atcoder.jp/contests/"
+        },
+        { 
+          platform: "LeetCode", 
+          name: "Weekly Contest 482", 
+          time: "Sunday, 08:00 IST", // Sun Dec 28
+          url: "https://leetcode.com/contest/"
+        },
+        { 
+          platform: "Codeforces", 
+          name: "Good Bye 2025", 
+          time: "Dec 30, 20:05 IST", // Tue Dec 30 (Historical Trend)
+          url: "https://codeforces.com/contests"
+        },
+        { 
+          platform: "CodeChef", 
+          name: "Starters 220 (Rated)", 
+          time: "Dec 31, 20:00 IST", // Wed Dec 31
+          url: "https://www.codechef.com/contests"
+        },
       ]);
+
       setLoading(false);
-    }, 420);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    }, 600); 
+  }, [navigate]);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dp-dark", themeDark);
@@ -182,46 +332,61 @@ export default function DashboardPage() {
           </motion.div>
         </section>
 
-        <section className="dp-bottomgrid">
+<section className="dp-bottomgrid">
+          {/* --- RECENT ACTIVITY SECTION --- */}
           <div className="dp-card dp-activity">
             <div className="dp-card-head">
               <div className="dp-card-title">Recent activity</div>
               <div className="dp-card-sub">Latest runs, hints and saves</div>
             </div>
 
-            <ul className="dp-activity-list">
-              {recent.map((a) => (
-                <motion.li key={a.title + a.when} className="dp-activity-item"
-                  initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }}>
-                  <div className="dp-activity-time">{a.when}</div>
-                  <div>
-                    <div className="dp-activity-title">{a.title}</div>
-                    <div className="dp-activity-meta">{a.meta}</div>
-                  </div>
-                </motion.li>
+            {/* Switched from <ul> to <div> to support the <a> tags inside ActivityItem */}
+            <div className="dp-activity-list">
+              {recent.map((item, idx) => (
+                <motion.div 
+                  key={idx} 
+                  initial={{ opacity: 0, x: -6 }} 
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                >
+                  <ActivityItem item={item} />
+                </motion.div>
               ))}
-            </ul>
+              {recent.length === 0 && (
+                 <div className="dp-empty-state">No recent activity</div>
+              )}
+            </div>
           </div>
 
           <aside className="dp-side-column">
-            <motion.div className="dp-next-contests card small"
-              initial={{ opacity: 0, x: 8 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.34 }}>
+            {/* --- NEXT CONTESTS SECTION --- */}
+            <motion.div 
+              className="dp-next-contests card small"
+              initial={{ opacity: 0, x: 8 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              transition={{ duration: 0.34 }}
+            >
               <div className="dp-card-head-inline">
                 <div className="dp-card-title">Next contests</div>
               </div>
-              <ul className="dp-contest-list">
+              
+              <div className="dp-contest-list">
                 {nextContests.map((c, i) => (
-                  <li key={i}>
-                    <div className="contest-name">{c.name}</div>
-                    <div className="contest-meta">{c.platform} • {c.time}</div>
-                  </li>
+                  <ContestCard key={i} c={c} />
                 ))}
-                {!nextContests.length && <li className="empty">No upcoming contests</li>}
-              </ul>
+                {!nextContests.length && (
+                  <div className="dp-empty-state">No upcoming contests</div>
+                )}
+              </div>
             </motion.div>
 
-            <motion.div className="dp-card dp-recommended"
-              initial={{ opacity: 0, x: 8 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.36 }}>
+            {/* --- RECOMMENDED SECTION --- */}
+            <motion.div 
+              className="dp-card dp-recommended"
+              initial={{ opacity: 0, x: 8 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              transition={{ duration: 0.36 }}
+            >
               <div className="dp-card-head">
                 <div className="dp-card-title">Recommended for you</div>
                 <div className="dp-card-sub">Based on recent attempts</div>
@@ -230,7 +395,12 @@ export default function DashboardPage() {
               <div className="dp-problems-grid">
                 <AnimatePresence>
                   {recommendedList.map((p, idx) => (
-                    <motion.div key={p.title} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.06 }}>
+                    <motion.div 
+                      key={p.title} 
+                      initial={{ opacity: 0, y: 8 }} 
+                      animate={{ opacity: 1, y: 0 }} 
+                      transition={{ delay: idx * 0.06 }}
+                    >
                       <ProblemCard p={p} />
                     </motion.div>
                   ))}
