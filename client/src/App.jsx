@@ -27,6 +27,7 @@ const App = () => {
         {/* Public auth pages */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/auth-success" element={<AuthSuccess />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         {/* <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} /> */}

@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import "./Auth/AuthPage.css";
 import { saveAuth, getAuth } from "../utils/auth";
 import DotGrid from "../components/ui/DotGrid";
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 
@@ -29,7 +29,7 @@ const LoginPage = () => {
   setLoading(true);
 
   try {
-    const res = await fetch("https://iapss-backend.onrender.com/api/auth/login", {
+    const res = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -37,7 +37,7 @@ const LoginPage = () => {
 
     const data = await res.json();
     if (!res.ok) {
-      alert(data.error || "Login failed");
+      alert(data.error || "Login failed or Incorrect Credentials\nPlease Try again !!");
       return;
     }
 
@@ -52,11 +52,11 @@ const LoginPage = () => {
 
 
   const handleGoogleLogin = () => {
-    window.location.href = "https://iapss-backend.onrender.com/api/auth/google";
+    window.location.href = `${API_URL}/api/auth/google`;
   };
 
   const handleGithubLogin = () => {
-    window.location.href = "https://iapss-backend.onrender.com/api/auth/github";
+    window.location.href = `${API_URL}/api/auth/github`;
   };
 
   return (

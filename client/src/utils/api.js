@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_BASE || "https://iapss-backend.onrender.com/api";
+const API_BASE = import.meta.env.VITE_API_BASE || `${API_BASE}/api`;
 
 export async function apiRequest(path, options = {}) {
   const res = await fetch(`${API_BASE}${path}`, {

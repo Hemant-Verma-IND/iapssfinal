@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import AuthLayout from "../../components/auth/AuthLayout";
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -7,7 +9,7 @@ export default function ForgotPasswordPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const res = await fetch("https://iapss-backend.onrender.com/api/auth/forgot-password", {
+    const res = await fetch(`${API_URL}/api/auth/forgot-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),

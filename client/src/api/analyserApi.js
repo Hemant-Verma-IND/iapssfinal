@@ -1,4 +1,4 @@
-const API_BASE = "https://iapss-backend.onrender.com/api";
+const API_BASE = import.meta.env.VITE_API_URL;
 
 async function postJson(path, body) {
   const res = await fetch(`${API_BASE}${path}`, {

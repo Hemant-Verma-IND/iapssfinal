@@ -1,6 +1,8 @@
 import { getToken } from "../utils/auth";
+const API_BASE = import.meta.env.VITE_API_URL;
 
-const API = "https://iapss-backend.onrender.com/api/code";
+
+const API = `${API_BASE}/api/code`;
 
 export async function saveCodeHistory(data) {
   const res = await fetch(API + "/save", {

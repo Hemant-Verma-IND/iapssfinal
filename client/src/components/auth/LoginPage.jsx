@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import AuthLayout from "../../components/auth/AuthLayout";
 import { saveAuth } from "../../utils/auth";
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -14,14 +16,14 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch("https://iapss-backend.onrender.com/api/auth/login", {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
-      if (!res.ok) return alert(data.error || "Login failed");
+      if (!res.ok) return alert(data.error || "Login failed or Incorrect Credentials");
 
       saveAuth(data.token, data.user);
       navigate("/");
@@ -31,11 +33,11 @@ export default function LoginPage() {
   }
 
   function google() {
-    window.location.href = "https://iapss-backend.onrender.com/api/auth/google";
+    window.location.href = `${API_URL}/api/auth/google`;
   }
 
   function github() {
-    window.location.href = "https://iapss-backend.onrender.com/api/auth/github";
+    window.location.href = `${API_URL}/api/auth/github`;
   }
 
   return (

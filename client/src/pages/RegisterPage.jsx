@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import "./Auth/AuthPage.css";
 import DotGrid from "../components/ui/DotGrid";
 import { saveAuth, getAuth } from "../utils/auth";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ async function handleRegister(e) {
   setLoading(true);
 
   try {
-    const res = await fetch("https://iapss-backend.onrender.com/api/auth/register", {
+    const res = await fetch(`${API_URL}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password }),
@@ -44,7 +45,7 @@ async function handleRegister(e) {
     }
 
     // CASE B: backend requires manual login
-    const loginRes = await fetch("https://iapss-backend.onrender.com/api/auth/login", {
+    const loginRes = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -69,11 +70,11 @@ async function handleRegister(e) {
 }
 
   const handleGoogleSignup = () => {
-    window.location.href = "https://iapss-backend.onrender.com/api/auth/google";
+    window.location.href = `${API_URL}/api/auth/google`;
   };
 
   const handleGithubSignup = () => {
-    window.location.href = "https://iapss-backend.onrender.com/api/auth/github";
+    window.location.href = `${API_URL}/api/auth/github`;
   };
 
   return (

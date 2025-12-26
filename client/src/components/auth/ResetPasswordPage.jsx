@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import AuthLayout from "../../components/auth/AuthLayout";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function ResetPasswordPage() {
       return;
     }
 
-    const res = await fetch("https://iapss-backend.onrender.com/api/auth/reset-password", {
+    const res = await fetch(`${API_URL}/api/auth/reset-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, password }),

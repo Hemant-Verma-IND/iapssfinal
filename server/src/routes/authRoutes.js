@@ -8,7 +8,7 @@ import passport from "passport";
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret123";
 const SALT_ROUNDS = 10;
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "http://localhost:5173";
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN;
 
 function sendValidationError(res, message) {
   return res.status(400).json({
@@ -61,6 +61,20 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
+// --- HELPER FOR REDIRECT ---
+const redirectWithAuth = (res, user, token) => {
+  const userData = encodeURIComponent(
+    JSON.stringify({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    })
+  );
+  res.redirect(`${CLIENT_ORIGIN}/auth-success?token=${token}&user=${userData}`);
+};
+
+// --- GOOGLE ---
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -70,47 +84,26 @@ router.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),
   (req, res) => {
-    // FIX 1: Use 'id' to match standard payload
-    const token = jwt.sign(
-      { id: req.user._id }, 
-      JWT_SECRET,
-      { expiresIn: "7d" }
-    );
-
-    // FIX 2: Direct redirect to Dashboard
-    res.redirect(`${CLIENT_ORIGIN}/auth-success?token=${token}`);
+    const token = jwt.sign({ id: req.user._id }, JWT_SECRET, { expiresIn: "7d" });
+    redirectWithAuth(res, req.user, token);
   }
 );
 
-// 1. Redirect to GitHub
-// GET /api/auth/github
+// --- GITHUB ---
 router.get(
-  '/github',
-  passport.authenticate('github', { scope: ['user:email'] })
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"] })
 );
 
-// 2. Callback from GitHub
-// GET /api/auth/github/callback
 router.get(
-  '/github/callback',
-  passport.authenticate('github', { failureRedirect: '/login', session: false }),
+  "/github/callback",
+  passport.authenticate("github", { failureRedirect: "/login", session: false }),
   (req, res) => {
-    // Generate Token
-    const token = jwt.sign(
-      { id: req.user._id, email: req.user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    const userString = encodeURIComponent(JSON.stringify({ 
-      name: req.user.name, 
-      email: req.user.email 
-    }));
-
-    // Redirect to same success page as Google
-    res.redirect(`${process.env.CLIENT_URL}/auth-success?token=${token}&user=${userString}`);
+    const token = jwt.sign({ id: req.user._id }, JWT_SECRET, { expiresIn: "7d" });
+    redirectWithAuth(res, req.user, token);
   }
 );
+
 
 
 // POST /api/auth/login

@@ -1,4 +1,4 @@
-const API_BASE = "https://iapss-backend.onrender.com/api";
+const API_BASE = import.meta.env.VITE_API_URL;
 
 export async function uploadProblemImage(file) {
   const formData = new FormData();
@@ -21,7 +21,7 @@ export async function uploadCodeFile(file) {
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await fetch("https://iapss-backend.onrender.com/api/code/upload-code", {
+  const res = await fetch(`${API_BASE}/api/code/upload-code`, {
     method: "POST",
     body: formData,
   });
