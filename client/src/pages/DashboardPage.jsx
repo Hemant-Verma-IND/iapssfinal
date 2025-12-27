@@ -193,23 +193,53 @@ export default function DashboardPage() {
 
       setRecent([
         { 
-          when: "2h ago", 
-          title: "Solved — Maximum Subarray Sum", 
-          meta: "Divide and Conquer • LeetCode",
-          url: "https://leetcode.com/problems/maximum-subarray/"
+          when: "15 min ago", 
+          title: "Number of Islands", 
+          meta: "Graph (BFS/DFS) • Medium",
+          url: "https://leetcode.com/problems/number-of-islands/" 
+        },
+        { 
+          when: "45 min ago", 
+          title: "Longest Increasing Subsequence", 
+          meta: "DP / Binary Search • Medium",
+          url: "https://leetcode.com/problems/longest-increasing-subsequence/" 
+        },
+        { 
+          when: "3h ago", 
+          title: "Group Anagrams", 
+          meta: "Hash Map • String",
+          url: "https://leetcode.com/problems/group-anagrams/" 
+        },
+        { 
+          when: "5h ago", 
+          title: "Lowest Common Ancestor", 
+          meta: "Binary Tree • Recursion",
+          url: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/" 
         },
         { 
           when: "Yesterday", 
-          title: "Analyzed — Unique Paths II", 
-          meta: "DP Optimization • LeetCode",
-          url: "https://leetcode.com/problems/unique-paths-ii/"
+          title: "Boredom", 
+          meta: "DP • Codeforces (1500 rated)",
+          url: "https://codeforces.com/problemset/problem/455/A" 
+        },
+        { 
+          when: "Yesterday", 
+          title: "Trapping Rain Water", 
+          meta: "Two Pointers • Hard",
+          url: "https://leetcode.com/problems/trapping-rain-water/" 
         },
         { 
           when: "2 days ago", 
-          title: "Contest — Codeforces Round 1071", 
-          meta: "Div 3 • Codeforces",
-          url: "https://codeforces.com/contest/2179" 
+          title: "Search in Rotated Sorted Array", 
+          meta: "Binary Search • Medium",
+          url: "https://leetcode.com/problems/search-in-rotated-sorted-array/" 
         },
+        { 
+          when: "3 days ago", 
+          title: "Frog 1 (Educational DP)", 
+          meta: "AtCoder • DP Basics",
+          url: "https://atcoder.jp/contests/dp/tasks/dp_a" 
+        }
       ]);
 
       // --- UPCOMING CONTESTS (Accurate for Dec 26, 2025) ---
@@ -245,7 +275,11 @@ export default function DashboardPage() {
   }, [navigate]);
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dp-dark", themeDark);
+    const root = document.documentElement;
+    root.classList.remove("dp-root--light", "dp-root--dark");
+    const activeClass = themeDark ? "dp-root--dark" : "dp-root--light";
+    root.classList.add(activeClass);
+    root.setAttribute("data-theme", themeDark ? "dark" : "light");
     localStorage.setItem("iapss_theme", themeDark ? "dark" : "light");
   }, [themeDark]);
 
@@ -432,7 +466,8 @@ export default function DashboardPage() {
       </main>
 
       <footer className="dp-footer compact">
-        <div className="dp-footer-left">© {new Date().getFullYear()} IAPSS</div>
+        <div className="dp-footer-left">© {new Date().getFullYear()} Hemant Verma | IAPSS. Built for competitive programming journeys.
+</div>
         <div className="dp-footer-right">
           <button className="dp-link-btn" onClick={() => alert("Help")}>Help</button>
           <button className="dp-link-btn" onClick={() => alert("Settings")}>Settings</button>
