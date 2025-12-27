@@ -1,3 +1,5 @@
+> ℹ️ **Note:** This repository hosts an academic project intended for learning, demonstration, and evaluation. Please review the license and security policy before use.
+
 <div align="center">
   <a href="https://iapss.vercel.app">
     <img src="./client/public/logo.svg" alt="IAPSS Logo" width="80" height="80">
@@ -18,3 +20,27 @@
 <br>
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=808080&center=true&vCenter=true&width=435&lines=Documentation+-+Coming+Soon...;Stay+Tuned+for+updates!;With+Love+-+Hemant+Verma" alt="Typing SVG" />
 </div>
+
+## License
+
+This project is released under a **Custom Academic and Deployment Protection License**.
+
+The source code is publicly available strictly for academic learning,
+demonstration, and evaluation purposes.  
+Unauthorised copying, reuse, redistribution, or deployment of this
+project (or any substantial part of it) is not permitted.
+
+For complete terms, please refer to the [LICENSE](./LICENSE) file.
+
+## Security Policy
+
+This project includes a defined security policy to ensure responsible
+and ethical use of the source code and the deployed application.
+
+Security vulnerabilities, misuse, or unintended behaviour should be
+reported responsibly.  
+Unauthorised security testing, exploitation, or abuse of the deployed
+application is discouraged.
+
+For detailed guidelines, please refer to the
+[SECURITY.md](./SECURITY.md) file.

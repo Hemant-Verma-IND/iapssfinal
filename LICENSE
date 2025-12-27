@@ -1,0 +1,107 @@
+CUSTOM ACADEMIC AND DEPLOYMENT PROTECTION LICENSE
+
+Copyright (c) 2025
+Author: Hemant Verma
+GitHub: https://github.com/Hemant-Verma-IND
+
+--------------------------------------------------
+
+1. OWNERSHIP
+
+This software, including but not limited to source code, frontend,
+backend, APIs, database schemas, documentation, and deployment
+configurations, is the original work and intellectual property of
+the author named above.
+
+All rights not expressly granted in this license are reserved
+by the author.
+
+--------------------------------------------------
+
+2. PERMITTED USE
+
+This project is made publicly available strictly for:
+
+- Academic learning and reference
+- Project demonstration and evaluation
+- Code review by authorised faculty or evaluators
+- Personal understanding of system architecture
+
+--------------------------------------------------
+
+3. PROHIBITED USE
+
+Without explicit written permission from the author, the following
+actions are strictly prohibited:
+
+- Copying, cloning, or forking the repository for academic submission
+- Reusing substantial portions of the code in another project
+- Redistributing the code in any form
+- Deploying the application or its derivatives under another name
+- Claiming authorship of this project or any of its components
+- Using the project for commercial purposes
+- Modifying and presenting the project as original work
+
+--------------------------------------------------
+
+4. DEPLOYMENT AND SECURITY RESTRICTIONS
+
+The deployed instance of this application is intended solely for
+demonstration and evaluation purposes.
+
+Any attempt to:
+
+- Gain unauthorised access to backend services
+- Exploit APIs, endpoints, or authentication mechanisms
+- Perform security testing, penetration testing, or vulnerability
+  scanning without prior written consent
+- Interfere with normal operation of the deployed application
+- Access, manipulate, or extract data without authorisation
+
+is strictly prohibited.
+
+Such actions may be treated as misuse or malicious activity,
+even if performed for learning or testing purposes.
+
+--------------------------------------------------
+
+5. NO REVERSE ENGINEERING OR ABUSE
+
+Users are not permitted to reverse engineer, decompile, or analyse
+the system with the intent to bypass security, replicate deployment,
+or identify vulnerabilities without the author’s knowledge.
+
+--------------------------------------------------
+
+6. DISCLAIMER OF WARRANTY
+
+This software is provided "AS IS", without warranty of any kind,
+express or implied, including but not limited to the warranties of
+merchantability, fitness for a particular purpose, or security.
+
+The author shall not be held liable for any damages arising from
+the use or misuse of this software.
+
+--------------------------------------------------
+
+7. ACADEMIC INTEGRITY NOTICE
+
+Unauthorised use of this project for academic submission may
+constitute academic misconduct and violate institutional policies.
+
+The author reserves the right to report such misuse to relevant
+authorities if discovered.
+
+--------------------------------------------------
+
+8. TERMINATION
+
+Any violation of the terms of this license will result in immediate
+termination of all permissions granted herein.
+
+--------------------------------------------------
+
+9. CONTACT
+
+For permission requests, clarification, or authorised use, contact:
+GitHub: https://github.com/Hemant-Verma-IND
