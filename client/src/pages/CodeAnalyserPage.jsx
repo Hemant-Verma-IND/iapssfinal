@@ -38,8 +38,9 @@ export default function CodeAnalyserPage() {
   const [language, setLanguage] = useState("cpp");
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isDark, setIsDark] = useState(false);
-
+  const [isDark, setIsDark] = useState(() => {
+    return localStorage.getItem("iapss_theme") === "dark";;
+  })
   // History State
   const [historyOpen, setHistoryOpen] = useState(false);
   
