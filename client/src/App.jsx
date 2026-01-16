@@ -14,6 +14,7 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 import AuthSuccess from "./pages/Auth/AuthSuccess";
 
 import NotFoundPage from "./pages/NotFoundPage";
+import DocumentPage from "./pages/DocumentPage";
 
 
 
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/auth-success" element={<AuthSuccess />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/docs" element={<DocumentPage />} />
         {/* <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} /> */}
 

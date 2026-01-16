@@ -469,8 +469,8 @@ export default function DashboardPage() {
         <div className="dp-footer-left">© {new Date().getFullYear()} Hemant Verma | IAPSS. Built for competitive programming journeys.
 </div>
         <div className="dp-footer-right">
-          <button className="dp-link-btn" onClick={() => alert("Help")}>Help</button>
-          <button className="dp-link-btn" onClick={() => alert("Settings")}>Settings</button>
+          <button className="dp-link-btn" onClick={() => navigate("/")}>Home</button>
+          <button className="dp-link-btn" onClick={() => navigate("/docs")}>About</button>
         </div>
       </footer>
     </div>

@@ -488,7 +488,7 @@ useEffect(() => {
         <span className="lp-footer-links">
           <a href="#lp-overview">Home</a>
           <span>•</span>
-          <a href="#lp-features">Features</a>
+          <a href="/docs">About</a>
         </span>
       </footer>
     </div>

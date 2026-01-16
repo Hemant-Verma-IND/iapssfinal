@@ -1,0 +1,67 @@
+.doc-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+}
+
+/* Header */
+.doc-header {
+  height: 64px;
+  padding: 0 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.doc-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.doc-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: white;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.doc-title {
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.doc-sub {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.doc-back {
+  border: 1px solid #e5e7eb;
+  background: transparent;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* PDF */
+.doc-content {
+  flex: 1;
+  overflow: hidden;
+}
+
+.doc-pdf {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
