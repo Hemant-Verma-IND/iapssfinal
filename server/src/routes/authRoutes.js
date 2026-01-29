@@ -84,7 +84,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", { session: false, failureRedirect: `${CLIENT_ORIGIN}/login` }),
   (req, res) => {
-    const token = jwt.sign({ id: req.user._id }, JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ id: req.user._id }, JWT_SECRET, { expiresIn: "15m" });
     redirectWithAuth(res, req.user, token);
   }
 );
@@ -99,7 +99,7 @@ router.get(
   "/github/callback",
   passport.authenticate("github", { failureRedirect: `${CLIENT_ORIGIN}/login`, session: false }),
   (req, res) => {
-    const token = jwt.sign({ id: req.user._id }, JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ id: req.user._id }, JWT_SECRET, { expiresIn: "15m" });
     redirectWithAuth(res, req.user, token);
   }
 );
@@ -136,7 +136,7 @@ router.post("/login", async (req, res, next) => {
       });
     }
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "15m" });
 
     res.json({
       success: true,
