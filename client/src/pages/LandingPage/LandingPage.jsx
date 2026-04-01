@@ -239,6 +239,81 @@ useEffect(() => {
           </div>
         </section>
 
+        <section id="lp-tools" className="lp-tools-section">
+          <div className="lp-tools-grid">
+            
+            {/* BOX 1: AI Edge-Case Generator */}
+            <div 
+              className="lp-tool-box" 
+              // UPDATED LOGIC: If logged in, go to the feature. If not, go to login with redirect.
+              onClick={() => navigate(auth ? "/edge-case-generator" : "/login?redirect=/edge-case-generator")}
+              style={{ cursor: "pointer" }}
+            >
+              <div className="lp-tool-icon">🧠</div>
+              <h3 className="lp-tool-title">AI Edge-Case Generator</h3>
+              <p className="lp-tool-desc">
+                Stuck on a hidden test case? Paste your code and let our AI generate and visualize the exact graph or array that breaks your logic.
+              </p>
+              
+              {/* UPDATED UI: Show a different CTA for logged-in users */}
+              {auth ? (
+                <span className="lp-tool-badge lp-tool-badge--pro">Unlocked</span>
+              ) : (
+                <span className="lp-tool-badge lp-tool-badge--locked">Login to Use</span>
+              )}
+            </div>
+
+            {/* BOX 2: AI Code Reverse-Engineering */}
+            <div 
+              className="lp-tool-box" 
+              // UPDATED LOGIC: Same pattern as Box 1
+              onClick={() => navigate(auth ? "/reverse-engineer" : "/login?redirect=/reverse-engineer")}
+              style={{ cursor: "pointer" }}
+            >
+              <div className="lp-tool-icon">🔄</div>
+              <h3 className="lp-tool-title">Reverse-Engineer Code</h3>
+              <p className="lp-tool-desc">
+                Paste your custom Segment Tree, Trie, or DP code. Our AI reads your logic and automatically draws your custom data structures.
+              </p>
+
+              {/* UPDATED UI: Same pattern as Box 1 */}
+              {auth ? (
+                <span className="lp-tool-badge lp-tool-badge--pro">Unlocked</span>
+              ) : (
+                <span className="lp-tool-badge lp-tool-badge--locked">Login to Use</span>
+              )}
+            </div>
+
+            {/* BOX 3: Code Visualizer Playground */}
+                      <div 
+            className="lp-tool-box" 
+            // If logged in, go to the PRO tool. If not, go to the FREE demo.
+            onClick={() => navigate(auth ? "/pro-visualizer" : "/algo-details")}
+            style={{ cursor: "pointer", border: "1px solid var(--brand-primary)", background: "rgba(59, 130, 246, 0.05)" }}
+          >
+            <div className="lp-tool-icon">⚙️</div>
+            <h3 className="lp-tool-title">
+              {/* Change title based on auth state */}
+              {auth ? "AI Code Visualizer" : "Interactive Demo"}
+            </h3>
+            <p className="lp-tool-desc">
+              {/* Change description based on auth state */}
+              {auth ? "Paste your own code and inputs to generate a step-by-step execution trace." : "Run sample algorithms step-by-step and see how our visualizer works."}
+            </p>
+
+            {auth ? (
+              <button className="lp-btn lp-btn-outline" style={{padding: '6px 16px', marginTop: '12px', borderColor: 'var(--brand-primary)', color: 'var(--brand-primary)'}}>
+                  Open Pro Tool
+              </button>
+            ) : (
+              <span className="lp-tool-badge lp-tool-badge--free">
+                TRY THE DEMO
+              </span>
+            )}
+          </div>
+
+          </div>
+        </section>
         {/* NEWS / CONTESTS / PODCASTS */}
         <section id="lp-updates" className="lp-updates">
           <div className="lp-updates-grid">

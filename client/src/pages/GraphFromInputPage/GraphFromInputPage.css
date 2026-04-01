@@ -1,0 +1,511 @@
+.dsa-page-root {
+  min-height: 100vh;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.dsa-header {
+  padding: 16px 32px;
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.dsa-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.back-btn {
+  background: transparent;
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.back-btn:hover {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.dsa-layout {
+  display: flex;
+  flex: 1;
+  padding: 24px;
+  gap: 24px;
+  height: calc(100vh - 80px);
+}
+
+.dsa-sidebar {
+  flex: 0 0 320px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+}
+
+.dsa-canvas-area {
+  flex: 1;
+  background: var(--bg-card-sub);
+  border: 1px dashed var(--border-light);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.dsa-placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary);
+  font-size: 1.2rem;
+}
+
+.dsa-textarea {
+  width: 100%;
+  flex: 1;
+  margin: 16px 0;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: monospace;
+  resize: none;
+}
+
+.dsa-code-box {
+  background: #0f172a;
+  color: #60a5fa;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+
+.dsa-primary-btn {
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-dark));
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: auto;
+}
+
+.dsa-toolbar {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.dsa-tool-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.dsa-playback-controls {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  background: var(--bg-card);
+  padding: 12px 24px;
+  border-radius: 99px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+}
+
+.dsa-playback-controls button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.dsa-stats-box {
+  background: var(--bg-card-sub);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+  margin-bottom: 24px;
+}
+
+.dsa-stats-box p { margin: 8px 0; }
+.dsa-properties-list { padding-left: 20px; line-height: 1.8; }
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid var(--border-light);
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+  box-shadow: var(--shadow-hover);
+  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-title {
+  margin: 0 0 12px 0;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+}
+
+.modal-text {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* HEADER & DROPDOWNS */
+.dsa-nav-controls {
+  display: flex;
+  gap: 20px;
+  margin-left: auto;
+}
+
+.dsa-dropdown-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.dsa-dropdown-group label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+
+.dsa-select {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  outline: none;
+}
+
+/* CODE VIEW */
+.dsa-code-container {
+  background: #0f172a;
+  border-radius: 8px;
+  padding: 12px 0;
+  flex: 1;
+  overflow: auto;
+}
+
+.dsa-code-line {
+  display: flex;
+  padding: 0 16px;
+  border-left: 3px solid transparent;
+}
+
+.dsa-code-line.active {
+  background: rgba(59, 130, 246, 0.2);
+  border-left-color: var(--brand-primary);
+}
+
+.line-number {
+  width: 30px;
+  color: #475569;
+  font-family: monospace;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.dsa-code-line pre {
+  margin: 0;
+  color: #94a3b8;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+}
+
+.dsa-code-line.active pre {
+  color: #fff;
+}
+
+/* VISUALIZATION CARDS */
+.var-grid {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.var-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 80px;
+}
+
+.var-name { font-size: 0.7rem; color: var(--text-tertiary); display: block; }
+.var-val { font-size: 1.2rem; font-weight: 800; color: var(--brand-primary); }
+
+.array-row { display: flex; gap: 6px; margin-top: 10px; }
+.array-cell {
+  width: 45px;
+  height: 45px;
+  border: 2px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  position: relative;
+  font-weight: bold;
+}
+
+.array-cell.highlight {
+  border-color: var(--brand-primary);
+  background: var(--brand-primary);
+  color: white;
+  transform: translateY(-5px);
+}
+
+.array-cell .idx {
+  position: absolute;
+  bottom: -18px;
+  font-size: 0.6rem;
+  color: var(--text-tertiary);
+}
+
+.dsa-layout {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 80px);
+  overflow: hidden;
+  position: relative;
+}
+
+/* THE SLIDER HANDLE */
+.dsa-resizer {
+  width: 8px;
+  cursor: col-resize;
+  background: transparent;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* Vertical Resizer logic */
+.dsa-resizer {
+  width: 10px; /* Wider area to grab */
+  margin: 0 -5px; /* Pull it back so it centers on the border */
+  cursor: col-resize;
+  background: transparent;
+  position: relative;
+  z-index: 100;
+  transition: background 0.2s;
+}
+
+.dsa-resizer:hover, .dsa-resizer.is-resizing {
+  background: rgba(59, 130, 246, 0.1);
+  border-left: 2px solid var(--brand-primary);
+}
+
+/* Playback Bar Styling */
+.dsa-playback-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.play-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--brand-primary);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.play-btn:hover {
+  transform: scale(1.05);
+  background: var(--brand-dark);
+}
+
+.ctrl-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ctrl-btn:hover {
+  border-color: var(--brand-primary);
+  color: var(--brand-primary);
+}
+
+.ctrl-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Fix sidebar overflow so content stays inside when resizing */
+.dsa-sidebar {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER SLIDER STYLING */
+.header-slider-group {
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+
+
+.header-slider-group label {
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: var(--text-tertiary);
+  letter-spacing: 0.05em;
+}
+
+/* The actual slider track */
+.width-slider {
+  -webkit-appearance: none;
+  width: 120px;
+  height: 4px;
+  background: var(--border-light);
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* The slider handle (Thumb) */
+.width-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--brand-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+  transition: transform 0.2s;
+}
+
+.width-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Ensure the layout doesn't jump */
+.dsa-layout {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 80px);
+  width: 100%;
+}
+
+.dsa-sidebar {
+  transition: width 0.1s ease-out; /* Smooth resizing */
+  border-right: 1px solid var(--border-light);
+}
+
+.dsa-canvas-area {
+  flex: 1; /* This takes whatever space is left */
+  overflow: auto;
+}
+
+/* Shows a blue line when hovering or dragging */
+.dsa-resizer:hover, 
+.dsa-resizer.is-resizing {
+  background: rgba(59, 130, 246, 0.2);
+  border-left: 2px solid var(--brand-primary);
+}
+
+/* Prevents text selection while dragging */
+.is-resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+/* Ensure Sidebar handles overflow properly when small */
+.dsa-sidebar {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--border-light);
+}
+
+.dsa-code-container {
+  overflow: auto; /* Scroll if code is too wide for the slider */
+}

@@ -768,3 +768,108 @@ body,
     text-align: center;
   }
 }
+
+/* ================= NEW DSA TOOLS SECTION ================= */
+
+.lp-tools-section {
+  /* Pulls the boxes up slightly to overlap the space below the hero */
+  margin: -20px auto 64px auto; 
+  max-width: 960px;
+  position: relative;
+  z-index: 10;
+}
+
+.lp-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.lp-tool-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lp-tool-box:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--brand-primary);
+  background: var(--bg-card-hover);
+}
+
+.lp-tool-icon {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card-sub);
+  border-radius: 50%;
+  border: 1px solid var(--border-light);
+  transition: all 0.3s ease;
+}
+
+.lp-tool-box:hover .lp-tool-icon {
+  background: var(--brand-primary);
+  border-color: transparent;
+  color: white; /* Only affects text/svg icons if you change emojis to SVGs later */
+  box-shadow: 0 4px 12px var(--brand-glow);
+  transform: scale(1.1);
+}
+
+.lp-tool-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 10px 0;
+}
+
+.lp-tool-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .lp-tools-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Add this to the end of LandingPage.css */
+
+.lp-tool-badge {
+  margin-top: 12px;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 99px; /* Pill shape */
+  font-weight: bold;
+  border: 1px solid transparent;
+}
+
+.lp-tool-badge--locked {
+  background: var(--bg-card-sub);
+  color: var(--text-tertiary);
+  border-color: var(--border-light);
+}
+
+.lp-tool-badge--pro {
+  background: rgba(16, 185, 129, 0.1); /* Green tint */
+  color: #10b981;
+}
+
+.lp-tool-badge--free {
+  background: var(--brand-primary);
+  color: white;
+}

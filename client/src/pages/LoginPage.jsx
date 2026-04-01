@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import "./Auth/AuthPage.css";
 import { saveAuth, getAuth } from "../utils/auth";
 import DotGrid from "../components/ui/DotGrid";
@@ -9,7 +9,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  // State for dark mode
+  const [searchParams] = useSearchParams();
+  const redirectPath = searchParams.get("redirect");
   
   const [isDark, setIsDark] = useState(false);
   
@@ -42,7 +43,7 @@ const LoginPage = () => {
     }
 
     saveAuth(data.token, data.user);
-    navigate("/dashboard"); // IMPORTANT
+    navigate(redirectPath || "/dashboard");
   } catch (err) {
     alert("Login error: " + err.message);
   } finally {

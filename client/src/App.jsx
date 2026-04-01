@@ -16,6 +16,13 @@ import AuthSuccess from "./pages/Auth/AuthSuccess";
 import NotFoundPage from "./pages/NotFoundPage";
 import DocumentPage from "./pages/DocumentPage";
 
+import GraphFromInputPage from "./pages/GraphFromInputPage/GraphFromInputPage";
+import DrawGraphPage from "./pages/DrawGraphPage/DrawGraphPage";
+import AlgorithmDetailsPage from "./pages/AlgorithmDetailsPage/AlgorithmDetailsPage";
+import EdgeCaseGeneratorPage from "./pages/EdgeCaseGeneratorPage/EdgeCaseGeneratorPage";
+import ReverseEngineerPage from "./pages/ReverseEngineerPage/ReverseEngineerPage";
+import ProVisualizerPage from "./pages/ProVisualizerPage/ProVisualizerPage";
+
 
 
 const App = () => {
@@ -31,6 +38,15 @@ const App = () => {
         <Route path="/auth-success" element={<AuthSuccess />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/docs" element={<DocumentPage />} />
+
+        <Route path="/graph-input" element={<GraphFromInputPage />} />
+        <Route path="/draw-graph" element={<DrawGraphPage />} />
+        <Route path="/algo-details" element={<AlgorithmDetailsPage />} />
+        <Route path="/edge-case-generator" element={<EdgeCaseGeneratorPage />} />
+        <Route path="/reverse-engineer" element={<ReverseEngineerPage />} />
+        <Route path="/pro-visualizer" element={<ProVisualizerPage />} />
+
+        
         {/* <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} /> */}
 
